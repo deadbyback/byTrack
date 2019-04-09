@@ -6,6 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\BugReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $user frontend\models\User*/
 
 $this->title = Yii::t('app', 'Bug Reports');
 $this->params['breadcrumbs'][] = $this->title;
@@ -85,7 +86,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 },
             ],
-            'reporter_id',
+            [
+                'attribute' => 'reporter_id',
+                'format' => 'raw',
+                'value' => function () {
+                     return Yii::$app->user->getId();
+                },
+            ],
             'destination_id',
 
             ['class' => 'yii\grid\ActionColumn'],

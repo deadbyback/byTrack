@@ -25,6 +25,9 @@ class BugReport extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+
+
     public static function tableName()
     {
         return '{{%bug_report}}';
@@ -36,7 +39,7 @@ class BugReport extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'required'],
+            [['title', 'severity', 'priority', 'status', 'destination_id'], 'required'],
             [['desription', 'playback_steps'], 'string'],
             [['reporter_id', 'destination_id'], 'integer'],
             [['title'], 'string', 'max' => 40],
@@ -80,6 +83,12 @@ class BugReport extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'reporter_id']);
     }
 
+
+    public function getAuthorId()
+    {
+        return Yii::$app->user->getId();
+    }
+
     /**
      * {@inheritdoc}
      * @return BugReportQuery the active query used by this AR class.
@@ -88,4 +97,5 @@ class BugReport extends \yii\db\ActiveRecord
     {
         return new BugReportQuery(get_called_class());
     }
+
 }

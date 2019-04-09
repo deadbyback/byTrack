@@ -18,41 +18,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'playback_steps')->textarea(['rows' => 6]) ?>
 
-    <?php// $form->field($model, 'severity')->textInput(['maxlength' => true]) ?>
-
-
-    <?php //$form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-
-    <?php //$form->field($model, 'severity')->textInput(['maxlength' => true]) ?>
-
-    <?php /*echo $form->field($model, 'severity')->dropdownList(
-            ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial'],
-            ['prompt'=>'Select Severity']
-    ); */?>
-
     <?php echo $form->field($model, 'severity')->radioList(['1' => 'Blocker', '2' => 'Critical', '3' => 'Major', '4' => 'Minor', '5' => 'Trivial',],
         ['multiple' => false]); ?>
-
-    <?php /*echo $form->field($model, 'severity')->dropdownList(
-            ['High', 'Medium', 'Low'],
-            ['prompt'=>'Select Priority']
-    ); */?>
 
     <?php echo $form->field($model, 'priority')->radioList(['1' => 'High', '2' => 'Medium', '3' => 'In Low',],
         ['multiple' => false]); ?>
 
-    <?php //$form->field($model, 'priority')->textInput(['maxlength' => true]) ?>
-
-    <?php /*echo $form->field($model, 'status')->dropdownList(
-        ['Open', 'Closed', 'In progress', 'Resolved', 'Reopened', 'In QA'],
-        ['prompt'=>'Status']
-    ); */?>
-
-    <?php echo $form->field($model, 'status')->radioList(['1' => 'Open', '2' => 'Closed', '3' => 'In progress', '4' => 'Resolved', '5' => 'Reopened', '6' => 'In QA'],
+    <?php echo $form->field($model, 'status')->radioList(['1' => 'Open', '2' => 'Closed', '3' => 'In progress',
+        '4' => 'Resolved', '5' => 'Reopened', '6' => 'In QA'],
         ['multiple' => false]); ?>
-
-
-    <?php //$form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'reporter_id')->textInput() ?>
 
