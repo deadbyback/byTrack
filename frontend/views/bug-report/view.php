@@ -33,9 +33,61 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'desription:ntext',
             'playback_steps:ntext',
-            'severity',
-            'priority',
-            'status',
+            [
+                'attribute' => 'severity',
+                'format' => 'raw',
+                'filter' => [
+                    0 => 'Blocker',
+                    1 => 'Critical',
+                    2 => 'Major',
+                    3 => 'Minor',
+                    4 => 'Trivial',
+                ],
+                'value' => function ($i) {switch ($i) {
+                    case 0: return 'Blocker'; break;
+                    case 1: return 'Critical'; break;
+                    case 2: return 'Major'; break;
+                    case 3: return 'Minor'; break;
+                    case 4: return 'Trivial'; break;
+                }
+                },
+            ],
+            [
+                'attribute' => 'priority',
+                'format' => 'raw',
+                'filter' => [
+                    0 => 'High',
+                    1 => 'Medium',
+                    2 => 'Low',
+                ],
+                'value' => function ($i) {switch ($i) {
+                    case 0: return 'High'; break;
+                    case 1: return 'Medium'; break;
+                    case 2: return 'Low'; break;
+                }
+                },
+            ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => [
+                    0 => 'Open',
+                    1 => 'Closed',
+                    2 => 'In Progress',
+                    3 => 'Resolved',
+                    4 => 'Reopened',
+                    5 => 'In QA',
+                ],
+                'value' => function ($i) {switch ($i) {
+                    case 0: return 'Open'; break;
+                    case 1: return 'Closed'; break;
+                    case 2: return 'In Progress'; break;
+                    case 3: return 'Resolved'; break;
+                    case 4: return 'Reopened'; break;
+                    case 5: return 'In QA'; break;
+                }
+                },
+            ],
             'reporter_id',
             'destination_id',
         ],

@@ -7,7 +7,7 @@ use frontend\models\BugReport;
 use frontend\models\BugReportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * BugReportController implements the CRUD actions for BugReport model.
@@ -17,7 +17,7 @@ class BugReportController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+   /* public function behaviors()
     {
         return [
             'verbs' => [
@@ -26,6 +26,30 @@ class BugReportController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+        ];
+    }*/
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::classname(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update', 'delete', 'index', 'view'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                      'allow' => false,
+                    ],
+                ]
+            ]
         ];
     }
 
@@ -67,6 +91,8 @@ class BugReportController extends Controller
         $model = new BugReport();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            /*$form = Yii::$app->request->post();
+            $model->reporter_id= Yii::$app->user->getId();*/
             return $this->redirect(['view', 'id' => $model->bug_id]);
         }
 
