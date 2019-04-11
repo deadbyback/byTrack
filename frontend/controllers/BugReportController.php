@@ -5,9 +5,12 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\BugReport;
 use frontend\models\BugReportSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * BugReportController implements the CRUD actions for BugReport model.
@@ -32,6 +35,16 @@ class BugReportController extends Controller
     public function behaviors()
     {
         return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'reporter_id',
+            ],
             'access' => [
                 'class' => AccessControl::classname(),
                 'rules' => [
@@ -43,6 +56,11 @@ class BugReportController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['create', 'update', 'delete', 'index', 'view'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['find', 'to-me'],
                         'roles' => ['@'],
                     ],
                     [
@@ -147,7 +165,37 @@ class BugReportController extends Controller
         if (($model = BugReport::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionFind()
+    {
+        $id = Yii::$app->user->id;
+        $query = BugReport::find()->where('reporter_id=:id', [':id' => $id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 15],
+        ]);
+        $searchModel = new BugReportSearch();
+        return $this->render('find', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    public function actionToMe()
+    {
+        $id = Yii::$app->user->id;
+        $query = BugReport::find()->where('destination_id=:id', [':id' => $id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 15],
+        ]);
+        $searchModel = new BugReportSearch();
+        return $this->render('toMe', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }
