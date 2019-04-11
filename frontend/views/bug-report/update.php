@@ -12,6 +12,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url'
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->bug_id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
+<p>
+    <?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
+</p>
 <div class="bug-report-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
