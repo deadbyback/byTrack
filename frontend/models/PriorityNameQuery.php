@@ -3,20 +3,20 @@
 namespace frontend\models;
 
 /**
- * This is the ActiveQuery class for [[BugReport]].
+ * This is the ActiveQuery class for [[PriorityName]].
  *
- * @see BugReport
+ * @see PriorityName
  */
-class BugReportQuery extends \yii\db\ActiveQuery
+class PriorityNameQuery extends \yii\db\ActiveQuery
 {
-    public function active()
+    /*public function active()
     {
-        return $this->andWhere('[[reporter_id]]=1');
-    }
+        return $this->andWhere('[[status]]=1');
+    }*/
 
     /**
      * {@inheritdoc}
-     * @return BugReport[]|array
+     * @return PriorityName[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class BugReportQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return BugReport|array|null
+     * @return PriorityName|array|null
      */
     public function one($db = null)
     {

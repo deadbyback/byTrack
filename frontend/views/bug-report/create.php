@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <p>
     <?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
 </p>
+<h3><?= Yii::t('app', 'My ID:')?><?= Yii::$app->user->id ?></h3>
 <div class="bug-report-create">
 
     <h1><?= Html::encode($this->title) ?></h1>

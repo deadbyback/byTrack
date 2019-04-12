@@ -41,56 +41,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'severity',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'Blocker',
-                    1 => 'Critical',
-                    2 => 'Major',
-                    3 => 'Minor',
-                    4 => 'Trivial',
+                    1 => 'Blocker',
+                    2 => 'Critical',
+                    3 => 'Major',
+                    4 => 'Minor',
+                    5 => 'Trivial',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'Blocker'; break;
-                    case 1: return 'Critical'; break;
-                    case 2: return 'Major'; break;
-                    case 3: return 'Minor'; break;
-                    case 4: return 'Trivial'; break;
-                }
-                },
+                //'value' => 'severityName.name'
             ],
             [
                 'attribute' => 'priority',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'High',
-                    1 => 'Medium',
-                    2 => 'Low',
+                    1 => 'High',
+                    2 => 'Medium',
+                    3 => 'Low',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'High'; break;
-                    case 1: return 'Medium'; break;
-                    case 2: return 'Low'; break;
-                }
-                },
+                //'value' => 'priorityName.name'
             ],
             [
                 'attribute' => 'status',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'Open',
-                    1 => 'Closed',
-                    2 => 'In Progress',
-                    3 => 'Resolved',
-                    4 => 'Reopened',
-                    5 => 'In QA',
+                    1 => 'Open',
+                    2 => 'Closed',
+                    3 => 'In Progress',
+                    4 => 'Resolved',
+                    5 => 'Reopened',
+                    6 => 'In QA',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'Open'; break;
-                    case 1: return 'Closed'; break;
-                    case 2: return 'In Progress'; break;
-                    case 3: return 'Resolved'; break;
-                    case 4: return 'Reopened'; break;
-                    case 5: return 'In QA'; break;
-                }
-                },
+                //'value' => 'statusName.name'
             ],
             'reporter_id',
             'destination_id',

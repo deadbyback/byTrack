@@ -14,6 +14,10 @@ class BugReportSearch extends BugReport
     /**
      * {@inheritdoc}
      */
+    public $severityName;
+    public $statusName;
+    public $priorityName;
+
     public function rules()
     {
         return [
@@ -41,13 +45,18 @@ class BugReportSearch extends BugReport
     public function search($params)
     {
         $query = BugReport::find();
+        //$severity = SeverityName::find();
+       // $severity = $query->join();
+        $query->joinWith(['severityName'])
+        ->joinWith(['priorityName'])
+        ->joinWith(['statusName']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 15,
+                'pageSize' => 20,
             ],
         ]);
 
@@ -69,9 +78,9 @@ class BugReportSearch extends BugReport
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'desription', $this->desription])
             ->andFilterWhere(['like', 'playback_steps', $this->playback_steps])
-            ->andFilterWhere(['like', 'severity', $this->severity])
-            ->andFilterWhere(['like', 'priority', $this->priority])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', SeverityName::tableName(), $this->severityName])
+            ->andFilterWhere(['like', PriorityName::tableName(), $this->priorityName])
+            ->andFilterWhere(['like', StatusName::tableName(), $this->statusName]);
 
         return $dataProvider;
     }

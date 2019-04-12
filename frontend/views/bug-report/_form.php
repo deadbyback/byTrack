@@ -22,15 +22,15 @@ use yii\widgets\ActiveForm;
         ->textarea(['rows' => 6]) ?>
 
     <?php echo $form->field($model, 'severity')
-        ->radioList([ 'Blocker',  'Critical', 'Major',  'Minor', 'Trivial',],
+        ->radioList([ 1 =>'Blocker', 2 => 'Critical', 3 => 'Major', 4 => 'Minor', 5 => 'Trivial',],
         ['multiple' => false]); ?>
 
     <?php echo $form->field($model, 'priority')
-        ->radioList(['1' => 'High', '2' => 'Medium', '3' => 'In Low',], ['multiple' => false]); ?>
+        ->radioList([1 => 'High', 2 => 'Medium', 3 => 'In Low',], ['multiple' => false]); ?>
 
     <?php echo $form->field($model, 'status')
-        ->radioList(['1' => 'Open', '2' => 'Closed', '3' => 'In progress',
-        '4' => 'Resolved', '5' => 'Reopened', '6' => 'In QA'], ['multiple' => false]); ?>
+        ->radioList([1 => 'Open', 2 => 'Closed', 3 => 'In progress',
+        4 => 'Resolved', 5 => 'Reopened', 6 => 'In QA'], ['multiple' => false]); ?>
 
     <?= $form->field($model, 'reporter_id')
         ->textInput() ?>

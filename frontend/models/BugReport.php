@@ -83,6 +83,22 @@ class BugReport extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'reporter_id']);
     }
 
+    public function getSeverityName()
+    {
+        return $this->hasOne(SeverityName::className(), ['severity_id' => 'severity']);
+    }
+
+
+    public function getStatusName()
+    {
+        return $this->hasOne(StatusName::className(), ['status_id' => 'status']);
+    }
+
+    public function getPriorityName()
+    {
+        return $this->hasOne(PriorityName::className(), ['priority_id' => 'priority']);
+    }
+
 
     public function getAuthorId()
     {

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+//use app\common\widgets\BackUrl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\BugReportSearch */
@@ -17,6 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Bug Report'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'My Own Reports'), ['bug-report/find'], ['class' => 'btn btn-primary'])?>
+        <?= Html::a(Yii::t('app', 'Reports To Me'), ['bug-report/to-me'], ['class' => 'btn btn-info'])?>
+        <!---/*Html::a(Yii::t('app', '<-- Go Back'), BackUrl::widget(), ['class' => 'btn btn-danger'])* -->
     </p>
 
     <?php  $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,78 +28,75 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options'=>['style' => 'white-space:nowrap; width:100%; ',],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'bug_id',
             'title',
-            'desription:ntext',
-            'playback_steps:ntext',
+            //'desription:ntext',
+           /* [
+                'attribute' => 'desription',
+                'format' => 'ntext',
+                'contentOptions' => ['style' => 'width:150px;  max-width:300px; overflow: hidden; max-height: 500px;
+                 height: 50px; max-height: 200px;'],
+
+            ],*/
+           // 'playback_steps:ntext',
+           /* [
+                'attribute' => 'playback_steps',
+                'format' => 'ntext',
+                'contentOptions' => ['style' => 'width:100px;  max-width:200px; overflow: hidden; height: 50px;
+                 max-height: 200px;'],
+
+            ],*/
             [
                 'attribute' => 'severity',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'Blocker',
-                    1 => 'Critical',
-                    2 => 'Major',
-                    3 => 'Minor',
-                    4 => 'Trivial',
+                    1 => 'Blocker',
+                    2 => 'Critical',
+                    3 => 'Major',
+                    4 => 'Minor',
+                    5 => 'Trivial',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'Blocker'; break;
-                    case 1: return 'Critical'; break;
-                    case 2: return 'Major'; break;
-                    case 3: return 'Minor'; break;
-                    case 4: return 'Trivial'; break;
-                }
-                },
+                'value' => 'severityName.name'
             ],
             [
                 'attribute' => 'priority',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'High',
-                    1 => 'Medium',
-                    2 => 'Low',
+                    1 => 'High',
+                    2 => 'Medium',
+                    3 => 'Low',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'High'; break;
-                    case 1: return 'Medium'; break;
-                    case 2: return 'Low'; break;
-                }
-                },
+                'value' => 'priorityName.name'
             ],
             [
                 'attribute' => 'status',
                 'format' => 'raw',
                 'filter' => [
-                    0 => 'Open',
-                    1 => 'Closed',
-                    2 => 'In Progress',
-                    3 => 'Resolved',
-                    4 => 'Reopened',
-                    5 => 'In QA',
+                    1 => 'Open',
+                    2 => 'Closed',
+                    3 => 'In Progress',
+                    4 => 'Resolved',
+                    5 => 'Reopened',
+                    6 => 'In QA',
                 ],
-                'value' => function ($i) {switch ($i) {
-                    case 0: return 'Open'; break;
-                    case 1: return 'Closed'; break;
-                    case 2: return 'In Progress'; break;
-                    case 3: return 'Resolved'; break;
-                    case 4: return 'Reopened'; break;
-                    case 5: return 'In QA'; break;
-                }
-                },
+                'value' => 'statusName.name'
             ],
             [
                 'attribute' => 'reporter_id',
                 'format' => 'raw',
-                'value' => function () {
+                /*'value' => function () {
                      return Yii::$app->user->getId();
-                },
+                },*/
             ],
             'destination_id',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{view}',
+            ],
         ],
     ]); ?>
 
