@@ -5,13 +5,14 @@ use yii\grid\GridView;
 //use app\common\widgets\BackUrl;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\models\BugReportSearch */
+/* @var $searchModel common\models\BugReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $user frontend\models\User*/
 
 $this->title = Yii::t('app', 'Bug Reports');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
 <div class="bug-report-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -24,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php  $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php \yii\widgets\Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -101,6 +102,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
+    <?php \yii\widgets\Pjax::end(); ?>
 
 </div>

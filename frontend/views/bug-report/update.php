@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url'
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->bug_id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
+<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
 <p>
     <?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
 </p>
@@ -22,5 +23,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
+    <?php if( Yii::$app->session->hasFlash('success') ): ?>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php echo Yii::$app->session->getFlash('success'); ?>
+        </div>
+    <?php endif;?>
 </div>

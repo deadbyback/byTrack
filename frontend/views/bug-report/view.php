@@ -11,13 +11,11 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url'
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<p>
-    <?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
-</p>
+<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
+<?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
 <div class="bug-report-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <h1><?= Yii::$app->user->id ?></h1>
     <?php if(\Yii::$app->user->can('updateReport', ['reporter_id' => $model->reporter_id])):?>
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->bug_id], ['class' => 'btn btn-primary']) ?>

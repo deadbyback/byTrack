@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = Yii::t('app', 'My Own Bug Report');
+$this->title = Yii::t('app', 'My Own Bug Reports');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
 <div class="bug-report-find">
     <h1><?= Html::encode($this->title) ?></h1>
-    <h1><?= Yii::t('app', 'My ID:')?><?= Yii::$app->user->id ?></h1>
+
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Bug Report'), ['create'], ['class' => 'btn btn-success']) ?>
