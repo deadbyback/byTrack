@@ -41,8 +41,8 @@ class PriorityName extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'priority_id' => 'Priority ID',
-            'name' => 'Name',
+            'priority_id' => Yii::t('app', 'Priority ID'),
+            'name' => Yii::t('app', 'Name'),
         ];
     }
 

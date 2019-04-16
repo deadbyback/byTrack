@@ -41,8 +41,8 @@ class StatusName extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'status_id' => 'Status ID',
-            'name' => 'Name',
+            'status_id' => Yii::t('app', 'Status ID'),
+            'name' => Yii::t('app', 'Name'),
         ];
     }
 

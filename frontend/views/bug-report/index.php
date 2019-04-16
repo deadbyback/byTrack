@@ -88,11 +88,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'reporter_id',
                 'format' => 'raw',
-                /*'value' => function () {
-                     return Yii::$app->user->getId();
-                },*/
+                'value' => 'reporter.username',
             ],
-            'destination_id',
+            [
+                'attribute' => 'destination_id',
+                'format' => 'raw',
+                'value' => 'destination.username',
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template'=>'{view}',

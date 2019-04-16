@@ -3,8 +3,8 @@
 namespace frontend\controllers;
 
 use Yii;
-use frontend\models\BugReport;
-use frontend\models\BugReportSearch;
+use common\models\BugReport;
+use common\models\BugReportSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

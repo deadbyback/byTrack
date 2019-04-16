@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\BugReport;
+use common\models\BugReport;
 
 /**
  * BugReportSearch represents the model behind the search form of `frontend\models\BugReport`.
@@ -45,8 +45,6 @@ class BugReportSearch extends BugReport
     public function search($params)
     {
         $query = BugReport::find();
-        //$severity = SeverityName::find();
-       // $severity = $query->join();
         $query->joinWith(['severityName'])
         ->joinWith(['priorityName'])
         ->joinWith(['statusName']);

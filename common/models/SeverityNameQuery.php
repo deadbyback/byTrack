@@ -1,13 +1,13 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[User]].
+ * This is the ActiveQuery class for [[SeverityName]].
  *
- * @see User
+ * @see SeverityName
  */
-class UserQuery extends \yii\db\ActiveQuery
+class SeverityNameQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class UserQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return User[]|array
+     * @return SeverityName[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class UserQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return User|array|null
+     * @return SeverityName|array|null
      */
     public function one($db = null)
     {

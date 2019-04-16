@@ -1,15 +1,15 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\SeverityName;
+use common\models\PriorityName;
 
 /**
- * SeverityNameSearch represents the model behind the search form of `frontend\models\SeverityName`.
+ * PriorityNameSearch represents the model behind the search form of `frontend\models\PriorityName`.
  */
-class SeverityNameSearch extends SeverityName
+class PriorityNameSearch extends PriorityName
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class SeverityNameSearch extends SeverityName
     public function rules()
     {
         return [
-            [['severity_id'], 'integer'],
+            [['priority_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -40,7 +40,7 @@ class SeverityNameSearch extends SeverityName
      */
     public function search($params)
     {
-        $query = SeverityName::find();
+        $query = PriorityName::find();
 
         // add conditions that should always apply here
 
@@ -58,7 +58,7 @@ class SeverityNameSearch extends SeverityName
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'severity_id' => $this->severity_id,
+            'priority_id' => $this->priority_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

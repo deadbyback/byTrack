@@ -1,13 +1,13 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[PriorityName]].
+ * This is the ActiveQuery class for [[StatusName]].
  *
- * @see PriorityName
+ * @see StatusName
  */
-class PriorityNameQuery extends \yii\db\ActiveQuery
+class StatusNameQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class PriorityNameQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return PriorityName[]|array
+     * @return StatusName[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class PriorityNameQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return PriorityName|array|null
+     * @return StatusName|array|null
      */
     public function one($db = null)
     {

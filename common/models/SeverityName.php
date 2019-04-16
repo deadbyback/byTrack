@@ -39,8 +39,8 @@ class SeverityName extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'severity_id' => 'Severity ID',
-            'name' => 'Name',
+            'severity_id' => Yii::t('app', 'Severity ID'),
+            'name' => Yii::t('app', 'Name'),
         ];
     }
 
