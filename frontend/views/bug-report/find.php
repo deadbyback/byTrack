@@ -82,6 +82,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template'=>'{view} {update}',
             ],
         ],
-
         ]); ?>
 </div>

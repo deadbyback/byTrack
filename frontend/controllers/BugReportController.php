@@ -55,13 +55,13 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete', 'index', 'view'],
-                        'roles' => ['@'],
+                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view'],
+                        'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['find', 'to-me'],
-                        'roles' => ['@'],
+                        'actions' => ['delete'],
+                        'roles' => ['admin'],
                     ],
                     [
                       'allow' => false,

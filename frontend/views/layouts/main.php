@@ -39,26 +39,30 @@ AppAsset::register($this);
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
-        ['label' => 'Gii', 'url' => ['/gii']],
     ];
 
-        /*Так делать правильно! */
-/*    if (!Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Backend', 'url'=>\Yii::$app->urlBackendManager->baseUrl];
-    }*/
-        /*А так делать неправильно - костыль!*/
-        /*Сделал чисто для собственного удобства - в будущем убрать!*/
-        /*TODO: РАСКОММЕНТИРОВАТЬ ПРАВИЛЬНЫЙ СПОСОБ, УБРАТЬ КОСТЫЛЬ!*/
-    if (!Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Backend', 'url'=>'http://bytrack/backend/web/'];
+    if (\Yii::$app->user->can('admin'))
+    {
+    $menuItems = [
+        ['label' => 'Backend', 'url'=>'http://bytrack/backend/web/'],
+        ['label' => 'Gii', 'url' => ['/gii']],
+        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'About', 'url' => ['/site/about']],
+        ['label' => 'Contact', 'url' => ['/site/contact']],
+       ];
     }
-        /*Конец костыля*/
+    else {
+        $menuItems = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
+        ];
+    }
 
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-
         $menuItems[] = ['label' => 'Bug Report', 'url' => ['/bug-report/index'],];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

@@ -6,6 +6,10 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
+$config = [
+    'name' => 'byTrack',
+];
+
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -14,6 +18,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -36,14 +43,18 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
-            'enablePrettyUrl' => true,
+            'enablePrettyUrl' => false,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'urlBackendManager' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => '/backend/web',
+            'enablePrettyUrl' => false,
+            'showScriptName' => false,
+        ],
     ],
     'params' => $params,
 ];

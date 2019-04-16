@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'Admin. panel',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,6 +37,13 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Bug Reports', 'url' => '/bug-report/index'],
+        ['label' => 'Users', 'url' => '/user/index'],
+        ['label' => 'Access', 'items' =>
+            [['label' => 'Role Items', 'url' => '/auth-items/index'],
+            ['label' => 'Rules', 'url' => '/auth-rule/index'],
+            ['label' => 'Assignment', 'url' => '/auth-assignment/index'],
+        ],],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
