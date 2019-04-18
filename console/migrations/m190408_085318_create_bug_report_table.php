@@ -15,7 +15,7 @@ class m190408_085318_create_bug_report_table extends Migration
         $this->createTable('{{%bug_report}}', [
             'bug_id' => $this->primaryKey(),
             'title' => $this->string(40)->notNull(),
-            'desription' => $this->text(),
+            'description' => $this->text(),
             'playback_steps' => $this->text(),
             'severity' => $this->string(16)->notNull(),
             'priority' => $this->string(16)->notNull(),
