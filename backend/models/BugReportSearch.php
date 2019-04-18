@@ -18,7 +18,7 @@ class BugReportSearch extends BugReport
     {
         return [
             [['bug_id', 'severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'integer'],
-            [['title', 'desription', 'playback_steps'], 'safe'],
+            [['title', 'description', 'playback_steps'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class BugReportSearch extends BugReport
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'desription', $this->desription])
+            ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'playback_steps', $this->playback_steps]);
 
         return $dataProvider;

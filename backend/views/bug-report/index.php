@@ -28,13 +28,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'bug_id',
             'title',
-            'desription:ntext',
-            'playback_steps:ntext',
-            'severity',
+            //'description:ntext',
+            //'playback_steps:ntext',
+            //'severity',
             //'priority',
-            //'status',
-            //'reporter_id',
-            //'destination_id',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => [
+                    1 => 'Open',
+                    2 => 'Closed',
+                    3 => 'In Progress',
+                    4 => 'Resolved',
+                    5 => 'Reopened',
+                    6 => 'In QA',
+                ],
+                'value' => 'statusName.name'
+            ],
+            [
+                'attribute' => 'reporter_id',
+                'format' => 'raw',
+                'value' => 'reporter.username',
+            ],
+            [
+                'attribute' => 'destination_id',
+                'format' => 'raw',
+                'value' => 'destination.username',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

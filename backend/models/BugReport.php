@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $bug_id
  * @property string $title
- * @property string $desription
+ * @property string $description
  * @property string $playback_steps
  * @property int $severity
  * @property int $priority
@@ -40,7 +40,7 @@ class BugReport extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'severity', 'priority', 'status', 'destination_id'], 'required'],
-            [['desription', 'playback_steps'], 'string'],
+            [['description', 'playback_steps'], 'string'],
             [['severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'integer'],
             [['title'], 'string', 'max' => 60],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
@@ -59,7 +59,7 @@ class BugReport extends \yii\db\ActiveRecord
         return [
             'bug_id' => 'Bug ID',
             'title' => 'Title',
-            'desription' => 'Desription',
+            'description' => 'description',
             'playback_steps' => 'Playback Steps',
             'severity' => 'Severity',
             'priority' => 'Priority',

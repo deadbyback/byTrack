@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\AuthAssignment;
-use backend\models\AuthAssignmentSearch;
+use common\models\AuthAssignment;
+use common\models\AuthAssignmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -47,7 +47,7 @@ class AuthAssignmentController extends Controller
     /**
      * Displays a single AuthAssignment model.
      * @param string $item_name
-     * @param string $user_id
+     * @param integer $user_id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -80,7 +80,7 @@ class AuthAssignmentController extends Controller
      * Updates an existing AuthAssignment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $item_name
-     * @param string $user_id
+     * @param integer $user_id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -101,7 +101,7 @@ class AuthAssignmentController extends Controller
      * Deletes an existing AuthAssignment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $item_name
-     * @param string $user_id
+     * @param integer $user_id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -116,7 +116,7 @@ class AuthAssignmentController extends Controller
      * Finds the AuthAssignment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $item_name
-     * @param string $user_id
+     * @param integer $user_id
      * @return AuthAssignment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\BugReport;
-use common\models\BugReportSearch;
+use common\models\AuthItemChild;
+use common\models\AuthItemChildSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BugReportController implements the CRUD actions for BugReport model.
+ * AuthItemChildController implements the CRUD actions for AuthItemChild model.
  */
-class BugReportController extends Controller
+class AuthItemChildController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class BugReportController extends Controller
     }
 
     /**
-     * Lists all BugReport models.
+     * Lists all AuthItemChild models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BugReportSearch();
+        $searchModel = new AuthItemChildSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,29 +45,30 @@ class BugReportController extends Controller
     }
 
     /**
-     * Displays a single BugReport model.
-     * @param integer $id
+     * Displays a single AuthItemChild model.
+     * @param string $parent
+     * @param string $child
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($parent, $child)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($parent, $child),
         ]);
     }
 
     /**
-     * Creates a new BugReport model.
+     * Creates a new AuthItemChild model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new BugReport();
+        $model = new AuthItemChild();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->bug_id]);
+            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
         }
 
         return $this->render('create', [
@@ -76,18 +77,19 @@ class BugReportController extends Controller
     }
 
     /**
-     * Updates an existing BugReport model.
+     * Updates an existing AuthItemChild model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $parent
+     * @param string $child
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($parent, $child)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($parent, $child);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->bug_id]);
+            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
         }
 
         return $this->render('update', [
@@ -96,29 +98,31 @@ class BugReportController extends Controller
     }
 
     /**
-     * Deletes an existing BugReport model.
+     * Deletes an existing AuthItemChild model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $parent
+     * @param string $child
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($parent, $child)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($parent, $child)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the BugReport model based on its primary key value.
+     * Finds the AuthItemChild model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return BugReport the loaded model
+     * @param string $parent
+     * @param string $child
+     * @return AuthItemChild the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($parent, $child)
     {
-        if (($model = BugReport::findOne($id)) !== null) {
+        if (($model = AuthItemChild::findOne(['parent' => $parent, 'child' => $child])) !== null) {
             return $model;
         }
 

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'bug_id',
             'title',
-            'desription:ntext',
+            'description:ntext',
             'playback_steps:ntext',
             'severity',
             'priority',
