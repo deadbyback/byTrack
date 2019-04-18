@@ -35,16 +35,21 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    /*TODO: разобраться, почему не работает маршрутизация на <controller>/<action> - done!*/
+    if (\Yii::$app->user->can('admin') && !Yii::$app->user->isGuest){
     $menuItems = [
+            ['label' => 'Front', 'url' => '/'],
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Bug Reports', 'url' => '/bug-report/index'],
-        ['label' => 'Users', 'url' => '/user/index'],
+        ['label' => 'Bug Reports', 'url' => '/admin/bug-report/index'],
+        ['label' => 'Users', 'url' => '/admin/user/index'],
         ['label' => 'Access', 'items' =>
-            [['label' => 'Role Items', 'url' => '/auth-items/index'],
-            ['label' => 'Rules', 'url' => '/auth-rule/index'],
-            ['label' => 'Assignment', 'url' => '/auth-assignment/index'],
-        ],],
+            [['label' => 'Role Items', 'url' => '/admin/auth-item/index'],
+                ['label' => 'Rules', 'url' => '/admin/auth-rule/index'],
+                ['label' => 'Assignment', 'url' => '/admin/auth-assignment/index'],
+                ['label' => 'Items inheritance', 'url' => '/admin/auth-item-child/index'],
+            ],],
     ];
+    }
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
