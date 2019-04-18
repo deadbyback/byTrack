@@ -18,6 +18,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'baseUrl' => ''
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -44,17 +45,17 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
-            'enablePrettyUrl' => false,
+            'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'site/index',
+                '<action>'=>'site/<action>',
             ],
         ],
-        'urlBackendManager' => [
-            'class' => 'yii\web\urlManager',
-            'baseUrl' => '/backend/web',
-            'enablePrettyUrl' => false,
-            'showScriptName' => false,
-        ],
+        'assetManager' => [
+            'basePath' => '@webroot/assets',
+            'baseUrl' => '@web/assets'],
+
     ],
     'params' => $params,
 ];
