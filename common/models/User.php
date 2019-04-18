@@ -90,6 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
             'verification_token' => 'Verification Token',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
+            'full_name' => 'Full Name',
         ];
     }
 
@@ -264,5 +265,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function getFullName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use common\models\BugReport;
 
 /**
- * BugReportSearch represents the model behind the search form of `frontend\models\BugReport`.
+ * BugReportSearch represents the model behind the search form of `common\models\BugReport`.
  */
 class BugReportSearch extends BugReport
 {
@@ -21,8 +21,8 @@ class BugReportSearch extends BugReport
     public function rules()
     {
         return [
-            [['bug_id', 'reporter_id', 'destination_id'], 'integer'],
-            [['title', 'desription', 'playback_steps', 'severity', 'priority', 'status'], 'safe'],
+            [['bug_id'], 'integer'],
+            [['title', 'description', 'playback_steps', 'severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'safe'],
         ];
     }
 
@@ -72,13 +72,16 @@ class BugReportSearch extends BugReport
             'reporter_id' => $this->reporter_id,
             'destination_id' => $this->destination_id,
         ]);
+/*        $query->andFilterWhere(['like', User::tableName(), $this->reporter])
+            ->andFilterWhere(['like', User::tableName(), $this->destination]);*/
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'desription', $this->desription])
+            ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'playback_steps', $this->playback_steps])
             ->andFilterWhere(['like', SeverityName::tableName(), $this->severityName])
             ->andFilterWhere(['like', PriorityName::tableName(), $this->priorityName])
             ->andFilterWhere(['like', StatusName::tableName(), $this->statusName]);
+        //$query->andFilterWhere(['like', User::tableName(), $this->reporter]);
 
         return $dataProvider;
     }

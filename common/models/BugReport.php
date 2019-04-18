@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $bug_id
  * @property string $title
- * @property string $desription
+ * @property string $description
  * @property string $playback_steps
  * @property string $severity
  * @property string $priority
@@ -40,8 +40,8 @@ class BugReport extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'severity', 'priority', 'status', 'destination_id'], 'required'],
-            [['desription', 'playback_steps'], 'string'],
-            [['reporter_id', 'destination_id'], 'integer'],
+            [['description', 'playback_steps'], 'string'],
+            [['reporter_id', 'destination_id'], 'safe'],
             [['title'], 'string', 'max' => 40],
             [['severity', 'priority', 'status'], 'string', 'max' => 16],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
@@ -57,7 +57,7 @@ class BugReport extends \yii\db\ActiveRecord
         return [
             'bug_id' => Yii::t('app', 'Bug ID'),
             'title' => Yii::t('app', 'Title'),
-            'desription' => Yii::t('app', 'Desription'),
+            'description' => Yii::t('app', 'description'),
             'playback_steps' => Yii::t('app', 'Playback Steps'),
             'severity' => Yii::t('app', 'Severity'),
             'priority' => Yii::t('app', 'Priority'),
@@ -113,5 +113,6 @@ class BugReport extends \yii\db\ActiveRecord
     {
         return new BugReportQuery(get_called_class());
     }
+
 
 }

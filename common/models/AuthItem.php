@@ -16,6 +16,7 @@ use Yii;
  * @property int $updated_at
  *
  * @property AuthAssignment[] $authAssignments
+ * @property User[] $users
  * @property AuthRule $ruleName
  * @property AuthItemChild[] $authItemChildren
  * @property AuthItemChild[] $authItemChildren0
@@ -69,6 +70,14 @@ class AuthItem extends \yii\db\ActiveRecord
     public function getAuthAssignments()
     {
         return $this->hasMany(AuthAssignment::className(), ['item_name' => 'name']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('{{%auth_assignment}}', ['item_name' => 'name']);
     }
 
     /**

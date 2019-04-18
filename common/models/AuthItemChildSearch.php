@@ -1,15 +1,15 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\AuthRule;
+use common\models\AuthItemChild;
 
 /**
- * AuthRuleSearch represents the model behind the search form of `backend\models\AuthRule`.
+ * AuthItemChildSearch represents the model behind the search form of `common\models\AuthItemChild`.
  */
-class AuthRuleSearch extends AuthRule
+class AuthItemChildSearch extends AuthItemChild
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,7 @@ class AuthRuleSearch extends AuthRule
     public function rules()
     {
         return [
-            [['name', 'data'], 'safe'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['parent', 'child'], 'safe'],
         ];
     }
 
@@ -40,7 +39,7 @@ class AuthRuleSearch extends AuthRule
      */
     public function search($params)
     {
-        $query = AuthRule::find();
+        $query = AuthItemChild::find();
 
         // add conditions that should always apply here
 
@@ -57,13 +56,8 @@ class AuthRuleSearch extends AuthRule
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'data', $this->data]);
+        $query->andFilterWhere(['like', 'parent', $this->parent])
+            ->andFilterWhere(['like', 'child', $this->child]);
 
         return $dataProvider;
     }
