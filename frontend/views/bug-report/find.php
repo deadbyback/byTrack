@@ -7,7 +7,7 @@ $this->title = Yii::t('app', 'My Own Bug Reports');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
+<h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
 <div class="bug-report-find">
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -27,19 +27,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' =>[
         ['class' => 'yii\grid\SerialColumn'],
-            'bug_id',
-            'title',
             [
-                 'attribute' => 'desription',
+                'attribute' => 'bug_id',
+                'label' => 'Bug ID'
+            ],
+            [
+                'attribute' => 'title',
+                'label' => Yii::t('app', 'Title')
+            ],
+            [
+                 'attribute' => 'description',
                  'format' => 'ntext',
                  'contentOptions' => ['style' => 'width:150px;  max-width:300px; overflow: hidden; max-height: 500px;
                   height: 50px; max-height: 200px;'],
+                'label' => Yii::t('app', 'Description')
              ],
             [
                  'attribute' => 'playback_steps',
                  'format' => 'ntext',
                  'contentOptions' => ['style' => 'width:100px;  max-width:200px; overflow: hidden; height: 50px;
                   max-height: 200px;'],
+                'label' => Yii::t('app', 'Playback Steps')
              ],
             [
                 'attribute' => 'severity',
@@ -51,7 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     4 => 'Minor',
                     5 => 'Trivial',
                 ],
-                'value' => 'severityName.name'
+                'value' => 'severityName.name',
+                'label' => Yii::t('app', 'Severity')
             ],
             [
                 'attribute' => 'priority',
@@ -61,7 +70,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     2 => 'Medium',
                     3 => 'Low',
                 ],
-                'value' => 'priorityName.name'
+                'value' => 'priorityName.name',
+                'label' => Yii::t('app', 'Priority')
             ],
             [
                 'attribute' => 'status',
@@ -74,9 +84,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     5 => 'Reopened',
                     6 => 'In QA',
                 ],
-                'value' => 'statusName.name'
+                'value' => 'statusName.name',
+                'label' => Yii::t('app', 'Status')
             ],
-            'destination_id',
+            [
+                'attribute' => 'destination_id',
+                'format' => 'raw',
+                'value' => 'destination.username',
+                'label' => Yii::t('app', 'Destination ID')
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template'=>'{view} {update}',

@@ -51,7 +51,7 @@ class BugReportController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index', 'view'],
-                        'roles' => ['?'],
+                        'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
@@ -111,6 +111,7 @@ class BugReportController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             /*$form = Yii::$app->request->post();
             $model->reporter_id= Yii::$app->user->getId();*/
+            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' .  $model->bug_id . ' was added successfully!');
             return $this->redirect(['view', 'id' => $model->bug_id]);
         }
 
@@ -131,6 +132,7 @@ class BugReportController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' .  $model->bug_id . ' was updated successfully!');
             return $this->redirect(['view', 'id' => $model->bug_id]);
         }
 

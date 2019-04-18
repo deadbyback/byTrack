@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'desription') ?>
+    <?= $form->field($model, 'description') ?>
 
     <?php// echo $form->field($model, 'playback_steps') ?>
 

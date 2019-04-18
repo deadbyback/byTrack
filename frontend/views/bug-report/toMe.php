@@ -7,7 +7,7 @@ $this->title = Yii::t('app', 'Bug Reports addressed to me');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
+<h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
 <div class="bug-report-to-me">
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'bug_id',
             'title',
             [
-                'attribute' => 'desription',
+                'attribute' => 'description',
                 'format' => 'ntext',
                 'contentOptions' => ['style' => 'width:150px;  max-width:300px; overflow: hidden; max-height: 500px;
                   height: 50px; max-height: 200px;'],
@@ -76,7 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'value' => 'statusName.name'
             ],
-            'reporter_id',
+            [
+                'attribute' => 'reporter_id',
+                'format' => 'raw',
+                'value' => 'reporter.username',
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template'=>'{view} {update}',

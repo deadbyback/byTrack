@@ -2,17 +2,19 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
+
 //use app\common\widgets\BackUrl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BugReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $user frontend\models\User*/
+/* @var $user common\models\User*/
 
 $this->title = Yii::t('app', 'Bug Reports');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Welcome, <?= Yii::$app->user->identity->username ?>. Your ID: <?= Yii::$app->user->id ?></h1>
+<h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
 <div class="bug-report-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -25,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php  $this->render('_search', ['model' => $searchModel]); ?>
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,25 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'bug_id',
             'title',
-            //'desription:ntext',
-           /* [
-                'attribute' => 'desription',
-                'format' => 'ntext',
-                'contentOptions' => ['style' => 'width:150px;  max-width:300px; overflow: hidden; max-height: 500px;
-                 height: 50px; max-height: 200px;'],
-
-            ],*/
-           // 'playback_steps:ntext',
-           /* [
-                'attribute' => 'playback_steps',
-                'format' => 'ntext',
-                'contentOptions' => ['style' => 'width:100px;  max-width:200px; overflow: hidden; height: 50px;
-                 max-height: 200px;'],
-
-            ],*/
             [
                 'attribute' => 'severity',
-                'format' => 'raw',
+                'format' => 'text',
                 'filter' => [
                     1 => 'Blocker',
                     2 => 'Critical',
@@ -65,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'priority',
-                'format' => 'raw',
+                'format' => 'text',
                 'filter' => [
                     1 => 'High',
                     2 => 'Medium',
@@ -75,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
-                'format' => 'raw',
+                'format' => 'text',
                 'filter' => [
                     1 => 'Open',
                     2 => 'Closed',
@@ -88,12 +74,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'reporter_id',
-                'format' => 'raw',
+                'format' => 'text',
                 'value' => 'reporter.username',
             ],
             [
                 'attribute' => 'destination_id',
-                'format' => 'raw',
+                'format' => 'text',
                 'value' => 'destination.username',
             ],
             [
@@ -102,6 +88,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 
 </div>
