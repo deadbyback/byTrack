@@ -25,7 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Reports To Me'), ['bug-report/to-me'], ['class' => 'btn btn-info'])?>
         <!---/*Html::a(Yii::t('app', '<-- Go Back'), BackUrl::widget(), ['class' => 'btn btn-danger'])* -->
     </p>
-
+<?php
+if (Yii::$app->user->can('manager')){
+    $template = '{view} {update}';
+/*} elseif (Yii::$app->user->can('updateOwnReport')){
+    $template = '{view} {update}';*/
+} elseif (Yii::$app->user->can('admin')) {
+    $template = '{view} {update} {delete}';
+} else {
+    $template = '{view}';
+}
+?>
     <?php  $this->render('_search', ['model' => $searchModel]); ?>
     <?php Pjax::begin(); ?>
     <?= GridView::widget([
@@ -84,7 +94,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template'=>'{view}',
+                'template'=>$template,
+                'buttons' => [
+                    'update' => function ($url, $model) {
+                    return $model->reporter_id == Yii::$app->user->id
+                        ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('app', 'Update'), 'class' =>'btn btn-xs',
+                            ]) : '';
+                        }
+                ]
             ],
         ],
     ]); ?>
