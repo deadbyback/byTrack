@@ -14,6 +14,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Bug Reports');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
 <div class="bug-report-index">
 
@@ -28,8 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 if (Yii::$app->user->can('manager')){
     $template = '{view} {update}';
-/*} elseif (Yii::$app->user->can('updateOwnReport')){
-    $template = '{view} {update}';*/
 } elseif (Yii::$app->user->can('admin')) {
     $template = '{view} {update} {delete}';
 } else {

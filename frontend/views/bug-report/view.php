@@ -52,7 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     4 => 'Minor',
                     5 => 'Trivial',
                 ],
-                'value' => function() {return \common\models\SeverityName::tableName()->name;},
             ],
             [
                 'attribute' => 'priority',
@@ -62,7 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     2 => 'Medium',
                     3 => 'Low',
                 ],
-                //'value' => 'priorityName.name'
             ],
             [
                 'attribute' => 'status',
@@ -75,7 +73,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     5 => 'Reopened',
                     6 => 'In QA',
                 ],
-                //'value' => 'statusName.name'
             ],
             'reporter_id',
             'destination_id',
