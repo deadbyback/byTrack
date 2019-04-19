@@ -39,6 +39,7 @@ AppAsset::register($this);
     if (\Yii::$app->user->can('admin') && !Yii::$app->user->isGuest){
     $menuItems = [
             ['label' => 'Front', 'url' => '/'],
+        ['label' => 'Gii', 'url' => '/gii'],
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'Bug Reports', 'url' => '/admin/bug-report/index'],
         ['label' => 'Users', 'url' => '/admin/user/index'],
