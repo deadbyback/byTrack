@@ -4,7 +4,6 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\BugReport;
 
 /**
  * BugReportSearch represents the model behind the search form of `common\models\BugReport`.
@@ -72,8 +71,6 @@ class BugReportSearch extends BugReport
             'reporter_id' => $this->reporter_id,
             'destination_id' => $this->destination_id,
         ]);
-/*        $query->andFilterWhere(['like', User::tableName(), $this->reporter])
-            ->andFilterWhere(['like', User::tableName(), $this->destination]);*/
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
@@ -81,8 +78,13 @@ class BugReportSearch extends BugReport
             ->andFilterWhere(['like', SeverityName::tableName(), $this->severityName])
             ->andFilterWhere(['like', PriorityName::tableName(), $this->priorityName])
             ->andFilterWhere(['like', StatusName::tableName(), $this->statusName]);
-        //$query->andFilterWhere(['like', User::tableName(), $this->reporter]);
 
+        if ($this->severity)
+            $query->bySeverity($this->severity);
+        if ($this->priority)
+            $query->byPriority($this->priority);
+        if ($this->status)
+            $query->byStatus($this->status);
         return $dataProvider;
     }
 }
