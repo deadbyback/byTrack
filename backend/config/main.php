@@ -22,14 +22,16 @@ return [
             'csrfParam' => '_csrf-backend',
             'baseUrl' => '/admin'
         ],
+        //если не работает - использовать одинаковый cookieValidationKey для обеих сторон в main-local.php
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_identity-bytrack', 'httpOnly' => true],
+            'loginUrl' => ['/login'],  //если нужна авторизация - перенаправляем на frontend
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            'name' => 'bytrack-session',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
