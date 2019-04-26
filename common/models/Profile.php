@@ -5,15 +5,15 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%profile}}".
+ * This is the model class for table "{{%user}}" om user's profile.
  *
- * @property int $user_id
  * @property string $first_name
  * @property string $last_name
  * @property string $gender
  * @property string $avatar
  *
  * @property User $user
+ * @property int id
  */
 class Profile extends \yii\db\ActiveRecord
 {
@@ -22,7 +22,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%profile}}';
+        return '{{%user}}';
     }
 
     /**
@@ -31,12 +31,12 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'first_name', 'last_name'], 'required'],
-            [['user_id'], 'integer'],
+            [['id', 'first_name', 'last_name'], 'required'],
+            [['id'], 'integer'],
             [['avatar'], 'string'],
             [['first_name', 'last_name', 'gender'], 'string', 'max' => 50],
-            [['user_id'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['id'], 'unique'],
+            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
 
@@ -59,7 +59,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'id']);
     }
 
     /**

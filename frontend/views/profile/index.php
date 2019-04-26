@@ -16,13 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Set image'), ['set-image', 'id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Update '), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Set image'), ['set-image', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'user_id',
+            /*'user_id',*/
             [
                 'attribute' => 'user.role',
             ],
@@ -37,13 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::img($data->getImage(), ['width' => 200]);
                 }
             ],
-
+            'first_name',
+            'last_name',
             [
                 'attribute' => 'user.email',
                 'label' => 'Email'
             ],
-            'first_name',
-            'last_name',
             [
                 'attribute' => 'gender',
                 'value' => $model->gender == 0 ? 'Male' : 'Female',

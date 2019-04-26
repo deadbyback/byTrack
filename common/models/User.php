@@ -16,8 +16,6 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
- * @property string $first_name
- * @property string $last_name
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
@@ -33,7 +31,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
-    const ROLE_USER = 'user';
+    const ROLE_WORKER = 'worker';
     const ROLE_MANAGER = 'manager';
     const ROLE_ADMIN = 'admin';
 
@@ -64,11 +62,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE], //временная заглушка с STATUS_INACTIVE на STATUS_ACTIVE
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at', 'first_name', 'last_name'], 'required'],
+            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['first_name', 'last_name'], 'string', 'max' => 20],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
@@ -88,9 +85,6 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'full_name' => 'Full Name',
         ];
     }
 
@@ -267,8 +261,4 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public function getFullName()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
 }

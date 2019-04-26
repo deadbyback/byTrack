@@ -8,12 +8,16 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Profile */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = Yii::t('app', 'Update Avatar: {name}', [
+    'name' => Yii::$app->user->identity->username,
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Profile'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="profile-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
 
     <?= $form->field($model, 'image')->fileInput(['maxlenght' => true]) ?>
 
