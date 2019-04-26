@@ -1,5 +1,9 @@
 <?php
 
+use common\models\PriorityName;
+use common\models\SeverityName;
+use common\models\StatusName;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -27,13 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
         <!---/*Html::a(Yii::t('app', '<-- Go Back'), BackUrl::widget(), ['class' => 'btn btn-danger'])* -->
     </p>
 <?php
-if (Yii::$app->user->can('manager')){
-    $template = '{view} {update}';
-} elseif (Yii::$app->user->can('admin')) {
+if (Yii::$app->user->can('admin')) {
     $template = '{view} {update} {delete}';
 } else {
-    $template = '{view}';
+    $template = '{view} {update}';
 }
+
+$severityQuery = SeverityName::find()->all();
+$priorityQuery = PriorityName::find()->all();
+$statusQuery = StatusName::find()->all();
+
+$severityFilter = ArrayHelper::map($severityQuery,'severity_id','name');
+$priorityFilter = ArrayHelper::map($priorityQuery,'priority_id','name');
+$statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
 ?>
     <?php  $this->render('_search', ['model' => $searchModel]); ?>
     <?php Pjax::begin(); ?>
@@ -49,36 +59,19 @@ if (Yii::$app->user->can('manager')){
             [
                 'attribute' => 'severity',
                 'format' => 'text',
-                'filter' => [
-                    1 => 'Blocker',
-                    2 => 'Critical',
-                    3 => 'Major',
-                    4 => 'Minor',
-                    5 => 'Trivial',
-                ],
+                'filter' => $severityFilter,
                 'value' => 'severityName.name'
             ],
             [
                 'attribute' => 'priority',
                 'format' => 'text',
-                'filter' => [
-                    1 => 'High',
-                    2 => 'Medium',
-                    3 => 'Low',
-                ],
+                'filter' => $priorityFilter,
                 'value' => 'priorityName.name'
             ],
             [
                 'attribute' => 'status',
                 'format' => 'text',
-                'filter' => [
-                    1 => 'Open',
-                    2 => 'Closed',
-                    3 => 'In Progress',
-                    4 => 'Resolved',
-                    5 => 'Reopened',
-                    6 => 'In QA',
-                ],
+                'filter' => $statusFilter,
                 'value' => 'statusName.name'
             ],
             [
@@ -93,10 +86,10 @@ if (Yii::$app->user->can('manager')){
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template'=>$template,
+                'template' => $template,
                 'buttons' => [
                     'update' => function ($url, $model) {
-                    return $model->reporter_id == Yii::$app->user->id
+                    return $model->reporter_id == Yii::$app->user->id || Yii::$app->user->can('admin')
                         ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                 'title' => Yii::t('app', 'Update'), 'class' =>'btn btn-xs',
                             ]) : '';

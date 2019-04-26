@@ -41,7 +41,6 @@ $items = ArrayHelper::map($users, 'id', 'username');
     <?= $form->field($model, 'reporter_id')
         ->dropDownList($items);
     ?>
-
     <?= $form->field($model, 'destination_id')
         ->dropDownList($items); ?>
 

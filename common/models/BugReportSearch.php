@@ -44,16 +44,15 @@ class BugReportSearch extends BugReport
     public function search($params)
     {
         $query = BugReport::find();
-        $query->joinWith(['severityName'])
-        ->joinWith(['priorityName'])
-        ->joinWith(['statusName']);
+        $query->joinWith(['severityName','priorityName', 'statusName']);
+
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 15,
             ],
         ]);
 
@@ -61,7 +60,7 @@ class BugReportSearch extends BugReport
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -75,16 +74,10 @@ class BugReportSearch extends BugReport
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'playback_steps', $this->playback_steps])
-            ->andFilterWhere(['like', SeverityName::tableName(), $this->severityName])
-            ->andFilterWhere(['like', PriorityName::tableName(), $this->priorityName])
-            ->andFilterWhere(['like', StatusName::tableName(), $this->statusName]);
+            ->andFilterWhere(['{{severity_name}}.[[severity_id]]' => $this->severity])
+            ->andFilterWhere(['{{priority_name}}.[[priority_id]]' => $this->priority])
+            ->andFilterWhere(['{{status_name}}.[[status_id]]' => $this->status]);
 
-        if ($this->severity)
-            $query->bySeverity($this->severity);
-        if ($this->priority)
-            $query->byPriority($this->priority);
-        if ($this->status)
-            $query->byStatus($this->status);
         return $dataProvider;
     }
 }

@@ -31,13 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
-            //'email:email',
+            'email:email',
             //'status',
-            //'created_at',
-            //'updated_at',
+            'created_at',
+            'updated_at',
             //'verification_token',
-            'first_name',
-            'last_name',
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

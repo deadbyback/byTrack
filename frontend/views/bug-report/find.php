@@ -7,7 +7,7 @@ $this->title = Yii::t('app', 'My Own Bug Reports');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
+<h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <div class="bug-report-find">
     <h1><?= Html::encode($this->title) ?></h1>
 

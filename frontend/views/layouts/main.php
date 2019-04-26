@@ -37,12 +37,10 @@ AppAsset::register($this);
         ],
     ]);
 
-
     if (!Yii::$app->user->isGuest && \Yii::$app->user->can('admin'))
     {
     $menuItems = [
         ['label' => 'Backend', 'url'=> '/admin'],
-        ['label' => 'Gii', 'url' => ['/gii']],
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
@@ -61,7 +59,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
         $menuItems[] = ['label' => 'Bug Report', 'url' => ['/bug-report/index'],];
-
+        $menuItems[] = ['label' => 'Profile', 'url' => ['profile/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -94,7 +92,8 @@ AppAsset::register($this);
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
-
+<!--кнопка вверх-->
+<?= common\widgets\ScrollupWidget::widget() ?>
 <?php $this->endBody() ?>
 </body>
 </html>
