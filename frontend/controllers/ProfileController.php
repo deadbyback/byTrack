@@ -59,7 +59,7 @@ class ProfileController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
+            return $this->redirect(['profile/index', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -95,8 +95,8 @@ class ProfileController extends Controller
 
         if (Yii::$app->request->isPost) {
             if ($model->validate()) {
-                $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
-                $model->docFiles = UploadedFile::getInstances($model, 'docFiles');
+                $model->files = UploadedFile::getInstances($model, 'files');
+
                 if ($model->upload()) {
                     return $this->render('uploadForm', ['model' => $model]);
                 }

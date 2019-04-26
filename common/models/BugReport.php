@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%bug_report}}".
@@ -46,6 +47,7 @@ class BugReport extends \yii\db\ActiveRecord
             [['severity', 'priority', 'status'], 'string', 'max' => 16],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
             [['reporter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reporter_id' => 'id']],
+/*            [['file'], 'string'],*/
         ];
     }
 
@@ -57,7 +59,7 @@ class BugReport extends \yii\db\ActiveRecord
         return [
             'bug_id' => Yii::t('app', 'Bug ID'),
             'title' => Yii::t('app', 'Title'),
-            'description' => Yii::t('app', 'description'),
+            'description' => Yii::t('app', 'Description'),
             'playback_steps' => Yii::t('app', 'Playback Steps'),
             'severity' => Yii::t('app', 'Severity'),
             'priority' => Yii::t('app', 'Priority'),
@@ -99,6 +101,11 @@ class BugReport extends \yii\db\ActiveRecord
         return $this->hasOne(PriorityName::className(), ['priority_id' => 'priority']);
     }
 
+    public function getReportFile()
+    {
+        return $this->hasMany(ReportFile::className(), ['bug_id' => 'bug_id']);
+    }
+
 
     public function getAuthorId()
     {
@@ -114,5 +121,14 @@ class BugReport extends \yii\db\ActiveRecord
         return new BugReportQuery(get_called_class());
     }
 
+    public function saveFiles($filename)
+    {
+        $this->file = $filename;
+        return $this->save(false);
+    }
 
+    public function getFileInReport()
+    {
+        return $this->hasMany(FileInReport::className(), ['bug_id' => 'bug_id']);
+    }
 }

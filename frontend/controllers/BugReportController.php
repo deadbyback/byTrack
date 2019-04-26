@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\ReportFile;
+use common\models\UploadForm;
 use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
@@ -11,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\behaviors\BlameableBehavior;
+use yii\web\UploadedFile;
 
 /**
  * BugReportController implements the CRUD actions for BugReport model.
@@ -20,17 +23,6 @@ class BugReportController extends Controller
     /**
      * {@inheritdoc}
      */
-   /* public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }*/
 
     public function behaviors()
     {
@@ -55,7 +47,7 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view'],
+                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -199,5 +191,38 @@ class BugReportController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionWhat()
+    {
+        $model = new UploadForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($this->validate()) {
+                if ($model->imageFile && $model->upload()) {
+                    $model->image = $this->imageFile->baseName . '.' . $this->imageFile->extension;
+                }
+                if ($this->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        }
+    }
+
+    public function actionUpload($id)
+    {
+        $model = new UploadForm();
+        $tmodel = $this->findModel($id);
+        if (Yii::$app->request->isPost) {
+            if ($model->validate()) {
+                $model->files = UploadedFile::getInstances($model, 'files');
+
+                if ($model->upload($tmodel->bug_id)) {
+                    return $this->redirect(['index']);
+                }
+            }
+        }
+        return $this->render('uploadForm', ['model' => $model]);
     }
 }
