@@ -3,6 +3,9 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%file}}".
@@ -11,6 +14,7 @@ use Yii;
  * @property string $file
  *
  * @property FileInReport[] $fileInReports
+ * @property Expression created
  */
 class File extends \yii\db\ActiveRecord
 {
@@ -29,6 +33,20 @@ class File extends \yii\db\ActiveRecord
     {
         return [
             [['file'], 'string'],
+            [['created'], 'safe'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created'],
+                ],
+                'value' => new Expression('NOW()'),
+            ]
         ];
     }
 
@@ -40,6 +58,7 @@ class File extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'file' => 'File',
+            'created' => 'Create Date',
         ];
     }
 

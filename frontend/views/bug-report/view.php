@@ -1,10 +1,13 @@
 <?php
 
+use yii\data\ActiveDataProvider;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
@@ -25,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php if (Yii::$app->user->id == $model->reporter_id): ?>
-    <?= Html::a(Yii::t('app', 'Link files'), ['bug-report/upload', 'id' => $model->bug_id], ['class' => 'btn btn-info'])?>
+    <?= Html::a(Yii::t('app', 'Attach files'), ['bug-report/upload', 'id' => $model->bug_id], ['class' => 'btn btn-info'])?>
     <?php endif; ?>
     <?php if(\Yii::$app->user->can('admin')):?>
 
@@ -72,6 +75,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Destination'
             ],
         ],
+    ]) ?>
+<hr>
+    <h2>Attached files</h2>
+    <?=
+    GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+                'file',
+            'created',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{delete}',
+            ],
+        ],
+
     ]) ?>
 <style>
     table.detail-view {

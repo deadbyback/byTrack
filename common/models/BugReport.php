@@ -101,11 +101,6 @@ class BugReport extends \yii\db\ActiveRecord
         return $this->hasOne(PriorityName::className(), ['priority_id' => 'priority']);
     }
 
-    public function getReportFile()
-    {
-        return $this->hasMany(ReportFile::className(), ['bug_id' => 'bug_id']);
-    }
-
 
     public function getAuthorId()
     {

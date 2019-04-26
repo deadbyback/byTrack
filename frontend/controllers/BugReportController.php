@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\File;
 use common\models\ReportFile;
 use common\models\UploadForm;
 use Yii;
@@ -86,8 +87,18 @@ class BugReportController extends Controller
      */
     public function actionView($id)
     {
+        $query = (new \yii\db\Query())
+            ->select('{{file}}.*')
+            ->from('{{file}}, {{file_in_report}}')
+            ->where('{{file_in_report}}.[[file_id]] = {{file}}.[[id]]')->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 5],
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -139,6 +150,8 @@ class BugReportController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -214,6 +227,8 @@ class BugReportController extends Controller
     {
         $model = new UploadForm();
         $tmodel = $this->findModel($id);
+
+
         if (Yii::$app->request->isPost) {
             if ($model->validate()) {
                 $model->files = UploadedFile::getInstances($model, 'files');
@@ -223,6 +238,9 @@ class BugReportController extends Controller
                 }
             }
         }
-        return $this->render('uploadForm', ['model' => $model]);
+        return $this->render('uploadForm', [
+             'model' => $model,
+             'bug_report' => $tmodel,
+        ]);
     }
 }

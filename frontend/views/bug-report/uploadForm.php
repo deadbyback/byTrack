@@ -16,7 +16,7 @@ YiiAsset::register($this);
 
 <h1>Welcome, <?= Yii::$app->user->identity->first_name ?> (ID: <?= Yii::$app->user->id ?>)</h1>
 
-<h4>You are uploading files to <?= $bug_report->bug_id?></h4>
+<h4>You are uploading files to bug report №: <?= $bug_report->bug_id?></h4>
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
 <hr>

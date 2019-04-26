@@ -3,6 +3,9 @@
 namespace common\models;
 
 use yii\base\Model;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\UploadedFile;
 use Yii;
 
@@ -26,6 +29,7 @@ class UploadForm extends Model
         ];
     }
 
+
     public function upload($id)
     {
         if ($this->validate()) {
@@ -37,7 +41,12 @@ class UploadForm extends Model
 
                 $inFile = new File();
                 $inFile->file = $filename . '.' . $file->extension;
+
                 $inFile->save();
+
+/*                $inFile->created = new Expression('NOW()');
+                $inFile->refresh();
+                $inFile->save();*/
 
                 $report = new FileInReport();
                 $report->bug_id = $id;
