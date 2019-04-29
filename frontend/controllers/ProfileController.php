@@ -2,8 +2,8 @@
 
 namespace frontend\controllers;
 
-use common\models\ImageUpload;
-use common\models\UploadForm;
+use frontend\models\ImageUpload;
+use frontend\models\UploadForm;
 use Yii;
 use common\models\Profile;
 use common\models\ProfileSearch;
@@ -32,12 +32,6 @@ class ProfileController extends Controller
         ];
     }
 
-    /**
-     * Lists Profile model.
-     * @return mixed
-     */
-
-
     public function actionIndex()
     {
         return $this->render('index', [
@@ -45,85 +39,37 @@ class ProfileController extends Controller
         ]);
     }
 
-
-
     /**
      * Updates an existing Profile model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
-        $model = $this->findModel($id);
+        $image = new ImageUpload;
+        $model = $this->findModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['profile/index', 'id' => $model->id]);
+            $profile = $this->findModel();
+            $file = UploadedFile::getInstance($image, 'image');
+            if ($profile->saveImage($image->uploadFile($file, $profile->avatar))) {
+                return $this->redirect(['profile/index', 'id' => $model->id]);
+            }
         }
-
         return $this->render('update', [
             'model' => $model,
+            'image' => $image
         ]);
     }
-
 
     /**
      * Finds the Profile model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
      * @return Profile the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+
      */
     private function findModel()
     {
         return Profile::findOne(Yii::$app->user->identity->getId());
     }
-
-    /*    protected function findModel($id)
-        {
-            if (($model = Profile::findOne($id)) !== null) {
-                return $model;
-            }
-
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-        }*/
-
-    public function actionUpload()
-    {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            if ($model->validate()) {
-                $model->files = UploadedFile::getInstances($model, 'files');
-
-                if ($model->upload()) {
-                    return $this->render('uploadForm', ['model' => $model]);
-                }
-            }
-        }
-        return $this->render('uploadForm', ['model' => $model]);
-    }
-/*
- * (strtolower(md5(uniqid($file->baseName)) . '.' . $file->extension))
- * Получаем уникальное имя каждого файла, который был загружен на сервер
- * */
-    public function actionSetImage()
-    {
-        $model = new ImageUpload;
-
-        if (Yii::$app->request->isPost)
-        {
-            $profile = $this->findModel();
-            $file = UploadedFile::getInstance($model, 'image');
-
-            if ($profile->saveImage($model->uploadFile($file, $profile->avatar)))
-            {
-                return $this->redirect(['profile/index']);
-            }
-        }
-
-        return $this->render('image', ['model' => $model]);
-    }
-
 }

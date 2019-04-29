@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Profile */
+/* @var $image common\models\Profile*/
 
 $this->title = Yii::t('app', 'Update Profile: {name}', [
     'name' => Yii::$app->user->identity->username,
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'image' => $image,
     ]) ?>
 
 </div>

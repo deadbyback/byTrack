@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Profile */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $image common\models\Profile*/
 ?>
 
 <div class="profile-form">
@@ -19,6 +20,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'gender')->dropDownList(['Male', 'Female']) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+
+    <?=    $form->field($image, 'image')->fileInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
