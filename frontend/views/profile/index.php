@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 use frontend\models\ImageUpload;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\ProfileSearch */
+/* @var $searchModel common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Profile');
@@ -47,6 +47,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
-
-
 </div>
