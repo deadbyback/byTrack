@@ -18,11 +18,7 @@ YiiAsset::register($this);
 
 <h4>You are uploading files to bug report №: <?= $bug_report->bug_id?></h4>
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
-
 <hr>
 <?= $form->field($model, 'files[]')->fileInput(['multiple' => true]) ?>
 <button>Submit</button>
-<h1><hr/></h1>
-
-
 <?php ActiveForm::end() ?>
