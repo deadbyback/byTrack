@@ -3,12 +3,12 @@
 namespace frontend\controllers;
 
 use common\models\File;
-use common\models\ReportFile;
 use common\models\UploadForm;
 use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -18,6 +18,7 @@ use yii\web\UploadedFile;
 
 /**
  * BugReportController implements the CRUD actions for BugReport model.
+ * @property mixed filename
  */
 class BugReportController extends Controller
 {
@@ -48,7 +49,7 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload'],
+                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -57,7 +58,7 @@ class BugReportController extends Controller
                         'roles' => ['admin'],
                     ],
                     [
-                      'allow' => false,
+                        'allow' => false,
                     ],
                 ]
             ]
@@ -87,10 +88,10 @@ class BugReportController extends Controller
      */
     public function actionView($id)
     {
-        $query = (new \yii\db\Query())
-            ->select('{{file}}.*')
-            ->from('{{file}}, {{file_in_report}}')
-            ->where('{{file_in_report}}.[[file_id]] = {{file}}.[[id]]')->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
+        $query = File::find()
+            ->innerJoin('{{file_in_report}}', '{{file_in_report}}.[[file_id]] = {{file}}.[[id]]' )
+            ->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 5],
@@ -112,9 +113,7 @@ class BugReportController extends Controller
         $model = new BugReport();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            /*$form = Yii::$app->request->post();
-            $model->reporter_id= Yii::$app->user->getId();*/
-            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' .  $model->bug_id . ' was added successfully!');
+            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
             return $this->redirect(['view', 'id' => $model->bug_id]);
         }
 
@@ -135,7 +134,7 @@ class BugReportController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' .  $model->bug_id . ' was updated successfully!');
+            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was updated successfully!');
             return $this->redirect(['view', 'id' => $model->bug_id]);
         }
 
@@ -206,41 +205,37 @@ class BugReportController extends Controller
         ]);
     }
 
-    public function actionWhat()
-    {
-        $model = new UploadForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($this->validate()) {
-                if ($model->imageFile && $model->upload()) {
-                    $model->image = $this->imageFile->baseName . '.' . $this->imageFile->extension;
-                }
-                if ($this->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            }
-        }
-    }
 
     public function actionUpload($id)
     {
         $model = new UploadForm();
-        $tmodel = $this->findModel($id);
+        $bug_report = $this->findModel($id);
 
-
-        if (Yii::$app->request->isPost) {
-            if ($model->validate()) {
+        if (Yii::$app->request->isPost && $model->validate()) {
                 $model->files = UploadedFile::getInstances($model, 'files');
-
-                if ($model->upload($tmodel->bug_id)) {
+                if ($model->upload($bug_report->bug_id)) {
                     return $this->redirect(['index']);
                 }
             }
-        }
         return $this->render('uploadForm', [
-             'model' => $model,
-             'bug_report' => $tmodel,
+            'model' => $model,
+            'bug_report' => $bug_report,
         ]);
     }
+
+    public function actionDownload($id)
+    {
+        ini_set('max_execution_time', 5 * 60);
+        $model = File::findOne($id);
+        $filename = $model->file;
+        $path = Yii::getAlias('@web') . '/files';
+        $file = $path . '/' . $filename;
+
+        if (file_exists($file)) {
+            return Yii::$app->response->sendFile($file);
+        } else {
+            throw new NotFoundHttpException("Сan't find {$filename} file");
+        }
+    }
+
 }
