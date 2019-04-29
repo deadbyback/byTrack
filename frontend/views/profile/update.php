@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Profile */
-/* @var $image common\models\Profile*/
+/* @var $model common\models\User */
+/* @var $image common\models\User*/
 
 $this->title = Yii::t('app', 'Update Profile: {name}', [
     'name' => Yii::$app->user->identity->username,

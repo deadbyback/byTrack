@@ -22,10 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'user.role',
+                'attribute' => 'role',
             ],
             [
-                'attribute' => 'user.username',
+                'attribute' => 'username',
                 'label' => 'Nickname'
             ],
             [
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name',
             'last_name',
             [
-                'attribute' => 'user.email',
+                'attribute' => 'email',
                 'label' => 'Email'
             ],
             [

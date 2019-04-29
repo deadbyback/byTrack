@@ -5,8 +5,8 @@ namespace frontend\controllers;
 use frontend\models\ImageUpload;
 use frontend\models\UploadForm;
 use Yii;
-use common\models\Profile;
-use common\models\ProfileSearch;
+use common\models\User;
+use common\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,11 +65,11 @@ class ProfileController extends Controller
     /**
      * Finds the Profile model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @return Profile the loaded model
+     * @return User the loaded model
 
      */
     private function findModel()
     {
-        return Profile::findOne(Yii::$app->user->identity->getId());
+        return User::findOne(Yii::$app->user->identity->getId());
     }
 }

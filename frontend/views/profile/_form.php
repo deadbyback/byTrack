@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Profile */
+/* @var $model common\models\User */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $image common\models\Profile*/
+/* @var $image common\models\User*/
 ?>
 
 <div class="profile-form">

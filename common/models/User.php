@@ -69,6 +69,11 @@ class User extends ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            [['id', 'first_name', 'last_name'], 'required'],
+            [['id'], 'integer'],
+            [['avatar'], 'string'],
+            [['first_name', 'last_name', 'gender'], 'string', 'max' => 50],
+            [['id'], 'unique'],
         ];
     }
 
@@ -85,6 +90,11 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
+            'user_id' => 'User ID',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'gender' => 'Gender',
+            'avatar' => 'Avatar',
         ];
     }
 
@@ -102,6 +112,26 @@ class User extends ActiveRecord implements IdentityInterface
     public function getBugReports0()
     {
         return $this->hasMany(BugReport::className(), ['reporter_id' => 'id']);
+    }
+
+    /**
+     * Сохраняем картинку
+     * @param $filename
+     * @return bool
+     */
+    public function saveImage($filename)
+    {
+        $this->avatar = $filename;
+        return $this->save(false);
+    }
+
+    /**
+     * Если картинка есть - выведем путь. Если нет - то no-image
+     * @return string
+     */
+    public function getImage()
+    {
+        return ($this->avatar) ? '/uploads/' . $this->avatar : '/no-image.png';
     }
 
     /**
