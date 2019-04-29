@@ -3,15 +3,18 @@
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $media common\models\File */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+//$media = \common\models\File::findOne($id);
 \yii\web\YiiAsset::register($this);
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
@@ -86,10 +89,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'created',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{delete}',
+                'template' => '{delete} {download}',
+                'buttons' => [
+                  'download' => function ($url, $model, $key) {
+                      return Html::a('<span class="glyphicon glyphicon-download-alt"></span>', ['bug-report/download', 'id' => $model->id], [
+                          'title' => Yii::t('app', 'Download'), 'class' =>'btn btn-xs',
+                          'data-method' => 'post', 'data-pjax' => '0',
+                      ]);
+                  }
+                ],
             ],
         ],
-
     ]) ?>
 <style>
     table.detail-view {
