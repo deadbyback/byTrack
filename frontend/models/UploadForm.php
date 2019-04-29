@@ -1,7 +1,9 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
+use common\models\File;
+use common\models\FileInReport;
 use yii\base\Model;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
