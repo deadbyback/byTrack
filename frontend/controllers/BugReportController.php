@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\File;
-use common\models\UploadForm;
+use frontend\models\UploadForm;
 use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
@@ -19,6 +19,7 @@ use yii\web\UploadedFile;
 /**
  * BugReportController implements the CRUD actions for BugReport model.
  * @property mixed filename
+ * @property mixed bug_id
  */
 class BugReportController extends Controller
 {
@@ -132,14 +133,24 @@ class BugReportController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $bug_report = $this->findModel($id);
+        $uploadForm = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was updated successfully!');
-            return $this->redirect(['view', 'id' => $model->bug_id]);
+        if (Yii::$app->request->isPost && $uploadForm->validate())
+        {
+            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
+            if ($uploadForm->upload($bug_report->bug_id))
+            {
+                if ($model->load(Yii::$app->request->post()) && $model->save())
+                {
+                    Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was updated successfully!');
+                    return $this->redirect(['view', 'id' => $model->bug_id]);
+                }
+            }
         }
-
         return $this->render('update', [
             'model' => $model,
+            'uploadForm' => $uploadForm,
         ]);
     }
 
@@ -211,12 +222,13 @@ class BugReportController extends Controller
         $model = new UploadForm();
         $bug_report = $this->findModel($id);
 
-        if (Yii::$app->request->isPost && $model->validate()) {
+        if (Yii::$app->request->isPost && $model->validate())
+        {
                 $model->files = UploadedFile::getInstances($model, 'files');
                 if ($model->upload($bug_report->bug_id)) {
                     return $this->redirect(['index']);
                 }
-            }
+        }
         return $this->render('uploadForm', [
             'model' => $model,
             'bug_report' => $bug_report,

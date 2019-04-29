@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\BugReport */
+/* @var $model common\models\BugReport */
+
 
 $this->title = Yii::t('app', 'Update Bug Report: {name}', [
     'name' => $model->title,
@@ -20,8 +21,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= /** @var TYPE_NAME $uploadForm */
+    $this->render('_form', [
         'model' => $model,
+        'uploadForm' => $uploadForm,
     ]) ?>
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
         <div class="alert alert-success alert-dismissible" role="alert">

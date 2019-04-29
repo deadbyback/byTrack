@@ -4,14 +4,17 @@ use common\models\User;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\File;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $uploadForm File */
+/* @var $files File*/
+
 
 $users = User::find()->all();
-
 $items = ArrayHelper::map($users, 'id', 'username');
+
 ?>
 
 <div class="bug-report-form">
@@ -43,6 +46,9 @@ $items = ArrayHelper::map($users, 'id', 'username');
     ?>
     <?= $form->field($model, 'destination_id')
         ->dropDownList($items); ?>
+
+    <?= $form->field($uploadForm, 'files[]')
+        ->fileInput(['options' => ['enctype' => 'multipart/form-data'], 'multiple' => true])?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
