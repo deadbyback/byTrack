@@ -25,43 +25,42 @@ class UploadForm extends Model
     {
         return [
             [['files'], 'file', 'checkExtensionByMimeType' => false, 'maxFiles' => 10, 'maxSize' => $this->maxSize, 'tooBig' => $this->tooBig],
-//            [['files'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg, gif, doc, docx, txt, pdf, xls, xlsx', 'maxFiles' => 10],
         ];
     }
 
 
     public function upload($id)
     {
-        if ($this->validate()) {
+        if (!$this->validate()) {
+            return false;
+        }
 
-            foreach ($this->files as $file) {
-                $filename =  strtolower(md5(uniqid($this->files->baseName)) . '.' . $this->files->extension);
-                $file->saveAs(Yii::getAlias('@web') . 'files/' . $filename . '.' . $file->extension);
+        foreach ($this->files as $file) {
+            $filename = strtolower(md5_file($file->tempName));
+            $file->saveAs(Yii::getAlias('@web') . 'files/' . $filename . '.' . $file->extension);
 
-
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+            try {
                 $inFile = new File();
                 $inFile->file = $filename . '.' . $file->extension;
-
                 $inFile->save();
-
-/*                $inFile->created = new Expression('NOW()');
-                $inFile->refresh();
-                $inFile->save();*/
-
                 $report = new FileInReport();
                 $report->bug_id = $id;
                 $report->file_id = $inFile->id;
                 $report->save();
 
+                $transaction->commit();
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
             }
-            //$report->save();
-            //var_dump($this->files);die;
-
-            Yii::$app->session->setFlash('success', "Files are added successfully!");
-            return true;
-        } else {
-            return false;
         }
+        Yii::$app->session->setFlash('success', "Files are added successfully!");
+        return true;
     }
 
 }
