@@ -1,0 +1,98 @@
+<?php
+
+use common\models\Project;
+use common\models\User;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+/* @var $this yii\web\View */
+/* @var $projectSearchModel common\models\ProjectSearch */
+/* @var $memberSearchModel common\models\ProjectParticipantsSearch */
+/* @var $projectDataProvider yii\data\ActiveDataProvider */
+/* @var $memberDataProvider yii\data\ActiveDataProvider */
+
+$this->title = Yii::t('app', 'Projects');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="project-index">
+    <?php if (Yii::$app->user->can('admin')): ?>
+    <h1><?= Html::encode( 'Addons for Admin')  ?></h1>
+    <p>
+        <?= Html::a(Yii::t('app', 'Create Project'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Join a member'), ['create-member'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <?php endif; ?>
+
+    <?php
+    if (Yii::$app->user->can('admin'))
+    {
+        $projectTemplate = '{view} {update} {delete} {report} {members}';
+        $memberTemplate = '{view} {update} {delete}';
+    } elseif (Yii::$app->user->can('manager'))
+    {
+        $projectTemplate = '{update} {report} {members}';
+        $memberTemplate = '{update}';
+    } else {
+        $projectTemplate = '{report} {members}';
+        $memberTemplate = '';
+    }
+    ?>
+
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+     <div class="card" style="max-width: 49%; float: left">
+    <h1><?= Html::encode(Yii::t('app', 'Projects')) ?></h1>
+    <?= GridView::widget([
+        'dataProvider' => $projectDataProvider,
+        'filterModel' => $projectSearchModel,
+        'tableOptions' => [
+            'class' => 'table table-bordered table-striped',
+        ],
+        'columns' => [
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => $projectTemplate,
+            ],
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'title',
+            'description',
+        ],
+    ]); ?>
+    </div>
+
+    <div class="card" style="max-width: 49%; float: right">
+        <h1><?= Html::encode(Yii::t('app', 'Projects Members')) ?></h1>
+        <?= GridView::widget([
+        'dataProvider' => $memberDataProvider,
+        'filterModel' => $memberSearchModel,
+        'tableOptions' => [
+            'class' => 'table table-bordered',
+        ],
+        'columns' => [
+            [
+                'attribute' => 'project_id',
+                'value' => 'project.title',
+                'label' => 'Project',
+                'filter' => ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'title'),
+            ],
+            [
+                'attribute' => 'id',
+                'value' => 'user.username',
+                'label' => 'User',
+                'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+            ],
+            'user_role',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => $memberTemplate,
+            ],
+        ],
+
+    ]); ?>
+    <?php Pjax::end(); ?>
+
+    </div>
+</div>
