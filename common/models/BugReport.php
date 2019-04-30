@@ -17,6 +17,7 @@ use yii\web\UploadedFile;
  * @property string $status
  * @property int $reporter_id
  * @property int $destination_id
+ * @property int $project_id
  *
  * @property User $destination
  * @property User $reporter
@@ -47,7 +48,8 @@ class BugReport extends \yii\db\ActiveRecord
             [['severity', 'priority', 'status'], 'string', 'max' => 16],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
             [['reporter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reporter_id' => 'id']],
-/*            [['file'], 'string'],*/
+            [['project_id'], 'string'],
+            [['project_id'], 'exist', 'skipOnEmpty' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']]
         ];
     }
 
@@ -66,6 +68,7 @@ class BugReport extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'reporter_id' => Yii::t('app', 'Reporter ID'),
             'destination_id' => Yii::t('app', 'Destination ID'),
+            'project_id' => Yii::t('app', 'Project ID'),
         ];
     }
 
@@ -125,5 +128,10 @@ class BugReport extends \yii\db\ActiveRecord
     public function getFileInReport()
     {
         return $this->hasMany(FileInReport::className(), ['bug_id' => 'bug_id']);
+    }
+
+    public function getProject()
+    {
+        return $this->hasOne(Project::className(), ['id' => 'project_id']);
     }
 }

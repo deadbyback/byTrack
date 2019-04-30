@@ -21,7 +21,7 @@ class BugReportSearch extends BugReport
     {
         return [
             [['bug_id'], 'integer'],
-            [['title', 'description', 'playback_steps', 'severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'safe'],
+            [['title', 'description', 'playback_steps', 'severity', 'priority', 'status', 'reporter_id', 'destination_id', 'project_id'], 'safe'],
         ];
     }
 
@@ -69,6 +69,7 @@ class BugReportSearch extends BugReport
             'bug_id' => $this->bug_id,
             'reporter_id' => $this->reporter_id,
             'destination_id' => $this->destination_id,
+            'project_id' => $this->project_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
