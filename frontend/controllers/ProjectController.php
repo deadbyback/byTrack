@@ -4,9 +4,11 @@ namespace frontend\controllers;
 
 use common\models\ProjectParticipants;
 use common\models\ProjectParticipantsSearch;
+use Throwable;
 use Yii;
 use common\models\Project;
 use common\models\ProjectSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,7 +43,7 @@ class ProjectController extends Controller
         $projectDataProvider = $projectSearchModel->search(Yii::$app->request->queryParams);
 
         $memberSearchModel = new ProjectParticipantsSearch();
-        $memberDataProvider = $memberSearchModel->search(Yii::$app->request->queryParams);//Project::findOne($this->id)->id
+        $memberDataProvider = $memberSearchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'projectSearchModel' => $projectSearchModel,
@@ -64,6 +66,11 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionViewMember($id)
     {
         return $this->render('view-member', [
@@ -128,6 +135,8 @@ class ProjectController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -152,6 +161,11 @@ class ProjectController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    /**
+     * @param $id
+     * @return ProjectParticipants|null
+     * @throws NotFoundHttpException
+     */
     protected function findParticipantsModel($id)
     {
         if (($model = ProjectParticipants::findOne($id)) !== null) {
