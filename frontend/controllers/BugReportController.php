@@ -113,6 +113,7 @@ class BugReportController extends Controller
     {
         $model = new BugReport();
         $uploadForm = new UploadForm();
+        $model->reporter_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
