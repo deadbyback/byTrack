@@ -11,13 +11,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="bug-report-to-me">
     <h1><?= Html::encode($this->title) ?></h1>
 
-
     <p>
-        <t><?= Html::a(Yii::t('app', 'Create Bug Report'), ['create'], ['class' => 'btn btn-success']) ?></t>
-        <?= Html::a(Yii::t('app', 'My Own Reports'), ['bug-report/find'], ['class' => 'btn btn-primary'])?>
-        <?= Html::a(Yii::t('app', 'Back to all'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
     </p>
-
 
     <?=
     /** @var  $dataProvider frontend\controllers\BugReportController */

@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <p>
-    <?= Html::a(Yii::t('app', 'Back to all reports'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+    <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
 </p>
 
 <div class="bug-report-create">

@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
-<?= Html::a(Yii::t('app', 'Back to all reports'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+<?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
 
 <div class="bug-report-view">
 
