@@ -112,6 +112,7 @@ class BugReportController extends Controller
     public function actionCreate()
     {
         $model = new BugReport();
+        $uploadForm = new UploadForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
@@ -120,6 +121,7 @@ class BugReportController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'uploadForm' => $uploadForm,
         ]);
     }
 

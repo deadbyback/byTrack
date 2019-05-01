@@ -1,9 +1,11 @@
 <?php
 
+use frontend\models\UploadForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\BugReport */
+/* @var $model common\models\BugReport */
+/** @var $uploadForm UploadForm */
 
 $this->title = Yii::t('app', 'Create Bug Report');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
@@ -18,8 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?=
+    $this->render('_form', [
         'model' => $model,
+        'uploadForm' => $uploadForm,
     ]) ?>
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
         <div class="alert alert-success alert-dismissible" role="alert">

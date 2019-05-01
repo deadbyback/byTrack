@@ -1,25 +1,33 @@
 <?php
 
+use common\models\Project;
 use common\models\User;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\File;
+use frontend\models\UploadForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
-/* @var $uploadForm File */
+/* @var $uploadForm UploadForm */
 /* @var $files File*/
 
 
 $users = User::find()->all();
 $items = ArrayHelper::map($users, 'id', 'username');
 
+$projects = Project::find()->all();
+$project_items = ArrayHelper::map($projects, 'id', 'title');
+
 ?>
 
 <div class="bug-report-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'project_id')
+        ->dropDownList($project_items); ?>
 
     <?= $form->field($model, 'title')
         ->textInput(['maxlength' => true]) ?>
