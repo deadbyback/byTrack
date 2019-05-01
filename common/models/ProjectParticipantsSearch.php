@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\ProjectParticipants;
 
 /**
  * ProjectParticipantsSearch represents the model behind the search form of `common\models\ProjectParticipants`.
@@ -40,9 +40,15 @@ class ProjectParticipantsSearch extends ProjectParticipants
      */
     public function search($params)
     {
-        $query = ProjectParticipants::find();
+        $id = Yii::$app->user->id;
 
-        // add conditions that should always apply here
+        $subquery = ProjectParticipants::find()
+            ->select('project_id')
+            ->innerJoin('{{project}}', '{{project_participants}}.[[project_id]] = {{project}}.[[id]]' )
+            ->andWhere('{{project_participants}}.[[user_id]] = :id', [':id' => $id]);
+
+        $query = ProjectParticipants::find()
+            ->where(['in', 'project_id', $subquery]);
 
         $memberDataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -51,12 +57,10 @@ class ProjectParticipantsSearch extends ProjectParticipants
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $memberDataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'project_id' => $this->project_id,
