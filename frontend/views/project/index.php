@@ -54,9 +54,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => $projectTemplate,
+                'buttons' =>
+                    [
+                      'report' => function ($url, $model, $key)
+                      {
+                        return Html::a('<span class="glyphicon glyphicon-menu-right"></span>', ['bug-report/index', 'id' => $model->id], [
+                          'title' => Yii::t('app', 'Go to reports'), 'class' =>'btn btn-xs',
+                        ]);
+                      }
+                    ],
             ],
             ['class' => 'yii\grid\SerialColumn'],
-
             'title',
             'description',
         ],

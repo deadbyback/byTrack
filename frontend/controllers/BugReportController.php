@@ -8,7 +8,6 @@ use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
 use yii\data\ActiveDataProvider;
-use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -68,12 +67,13 @@ class BugReportController extends Controller
 
     /**
      * Lists all BugReport models.
+     * @param $id
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new BugReportSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -129,6 +129,7 @@ class BugReportController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
      */
     public function actionUpdate($id)
     {
@@ -217,6 +218,12 @@ class BugReportController extends Controller
     }
 
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     */
     public function actionUpload($id)
     {
         $model = new UploadForm();
@@ -235,6 +242,11 @@ class BugReportController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return \yii\console\Response|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionDownload($id)
     {
         ini_set('max_execution_time', 5 * 60);

@@ -39,11 +39,13 @@ class BugReportSearch extends BugReport
      *
      * @param array $params
      *
+     * @param $id
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $id)
     {
-        $query = BugReport::find();
+        $query = BugReport::find()
+            ->andWhere('[[project_id]] = :id', [':id' => $id]);
         $query->joinWith(['severityName','priorityName', 'statusName']);
 
 

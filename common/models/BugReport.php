@@ -3,7 +3,8 @@
 namespace common\models;
 
 use Yii;
-use yii\web\UploadedFile;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%bug_report}}".
@@ -22,7 +23,7 @@ use yii\web\UploadedFile;
  * @property User $destination
  * @property User $reporter
  */
-class BugReport extends \yii\db\ActiveRecord
+class BugReport extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -73,7 +74,7 @@ class BugReport extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getDestination()
     {
@@ -81,7 +82,7 @@ class BugReport extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getReporter()
     {
@@ -117,12 +118,6 @@ class BugReport extends \yii\db\ActiveRecord
     public static function find()
     {
         return new BugReportQuery(get_called_class());
-    }
-
-    public function saveFiles($filename)
-    {
-        $this->file = $filename;
-        return $this->save(false);
     }
 
     public function getFileInReport()
