@@ -170,7 +170,7 @@ class BugReportController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect('javascript:history.back()');
     }
 
     /**
@@ -235,7 +235,7 @@ class BugReportController extends Controller
         {
                 $model->files = UploadedFile::getInstances($model, 'files');
                 if ($model->upload($bug_report->bug_id)) {
-                    return $this->redirect(['index']);
+                    return $this->redirect('javascript:history.back()');
                 }
         }
         return $this->render('uploadForm', [

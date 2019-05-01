@@ -1,9 +1,8 @@
 <?php
 
-use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -15,16 +14,16 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 //$media = \common\models\File::findOne($id);
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
-<?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
+<?= Html::a(Yii::t('app', 'Back to all reports'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
 
 <div class="bug-report-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-    <?php if(\Yii::$app->user->can('manager', ['reporter_id' => $model->reporter_id])):?>
+    <?php if(Yii::$app->user->can('manager', ['reporter_id' => $model->reporter_id])):?>
 
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->bug_id], ['class' => 'btn btn-primary']) ?>
         <?php endif; ?>
@@ -33,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (Yii::$app->user->id == $model->reporter_id): ?>
     <?= Html::a(Yii::t('app', 'Attach files'), ['bug-report/upload', 'id' => $model->bug_id], ['class' => 'btn btn-info'])?>
     <?php endif; ?>
-    <?php if(\Yii::$app->user->can('admin')):?>
+    <?php if(Yii::$app->user->can('admin')):?>
 
        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->bug_id], [
         'class' => 'btn btn-danger',

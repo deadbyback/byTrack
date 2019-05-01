@@ -1,10 +1,11 @@
 <?php
 
+use frontend\models\UploadForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
-
+/* @var $uploadForm UploadForm*/
 
 $this->title = Yii::t('app', 'Update Bug Report: {name}', [
     'name' => $model->title,
@@ -15,13 +16,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <p>
-    <?= Html::a(Yii::t('app', 'Back to all reports'), ['index'], ['class' => 'btn btn-info']) ?>
+    <?= Html::a(Yii::t('app', 'Back to all reports'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
 </p>
 <div class="bug-report-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= /** @var TYPE_NAME $uploadForm */
+    <?=
     $this->render('_form', [
         'model' => $model,
         'uploadForm' => $uploadForm,

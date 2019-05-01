@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create Bug Report'), ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Reports To Me'), ['bug-report/to-me'], ['class' => 'btn btn-primary'])?>
-        <?= Html::a(Yii::t('app', 'Back to all'), ['index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Back to all'), 'javascript:history.back()' , ['class' => 'btn btn-info']) ?>
     </p>
 
 
@@ -91,7 +91,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'destination_id',
                 'format' => 'raw',
                 'value' => 'destination.username',
-                'label' => Yii::t('app', 'Destination ID')
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

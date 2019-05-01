@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <t><?= Html::a(Yii::t('app', 'Create Bug Report'), ['create'], ['class' => 'btn btn-success']) ?></t>
         <?= Html::a(Yii::t('app', 'My Own Reports'), ['bug-report/find'], ['class' => 'btn btn-primary'])?>
-        <?= Html::a(Yii::t('app', 'Back to all'), ['index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Back to all'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
     </p>
 
 
