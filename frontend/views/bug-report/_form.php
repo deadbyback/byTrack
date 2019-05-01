@@ -17,7 +17,8 @@ use frontend\models\UploadForm;
 $users = User::find()->all();
 $items = ArrayHelper::map($users, 'id', 'username');
 
-$projects = Project::find()->all();
+$projects = Project::find()->innerJoin('{{project_participants}}', '{{project_participants}}.[[project_id]] = {{project}}.[[id]]' )
+    ->andWhere('{{project_participants}}.[[user_id]] = :id', [':id' => Yii::$app->user->id])->asArray()->all();
 $project_items = ArrayHelper::map($projects, 'id', 'title');
 
 ?>
