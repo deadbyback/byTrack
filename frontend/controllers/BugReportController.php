@@ -117,7 +117,7 @@ class BugReportController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
-            return $this->redirect(['view', 'id' => $model->bug_id]);
+            return $this->redirect(['bug-report/index', 'id' => $model->project_id]);
         }
 
         return $this->render('create', [
@@ -148,7 +148,7 @@ class BugReportController extends Controller
                 if ($model->load(Yii::$app->request->post()) && $model->save())
                 {
                     Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was updated successfully!');
-                    return $this->redirect(['view', 'id' => $model->bug_id]);
+                    return $this->redirect(['bug-report/index', 'id' => $model->project_id]);
                 }
             }
         }
