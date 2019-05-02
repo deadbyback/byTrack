@@ -149,6 +149,8 @@ class SiteController extends Controller
      * Signs user up.
      *
      * @return mixed
+     * @throws \yii\base\Exception
+     * @throws \Exception
      */
     public function actionSignup()
     {

@@ -3,6 +3,12 @@ body {
     height: 100%;
 }
 
+#w2, #w1 {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -24,6 +30,12 @@ body {
 .jumbotron {
     text-align: center;
     background-color: transparent;
+    height: auto;
+    width: auto;
+    align-content: center;
+    vertical-align: middle;
+    top: 50%;
+    color: #ffffff;
 }
 
 .jumbotron .btn {

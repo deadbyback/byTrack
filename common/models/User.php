@@ -16,19 +16,27 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
- * @property string $first_name
- * @property string $last_name
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ *
+ * @property BugReport[] $bugReports
+ * @property BugReport[] $bugReports0
+ * @property mixed avatar
+ * @property string first_name
+ * @property string last_name
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+
+    const ROLE_WORKER = 'worker';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_ADMIN = 'admin';
 
 
     /**
@@ -55,11 +63,89 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE], //временная заглушка с STATUS_INACTIVE на STATUS_ACTIVE
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['username', 'auth_key', 'password_hash', 'email'], 'required'],// 'created_at', 'updated_at'
+            [['created_at', 'updated_at'], 'safe'],
+            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['password_reset_token'], 'unique'],
+            //[['id', 'first_name', 'last_name'], 'required'],
+            [['id'], 'integer'],
+            [['avatar'], 'string'],
+            [['first_name', 'last_name', 'gender'], 'string', 'max' => 50],
+            [['id'], 'unique'],
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'email' => 'Email',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'verification_token' => 'Verification Token',
+            'user_id' => 'User ID',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'gender' => 'Gender',
+            'avatar' => 'Avatar',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBugReports()
+    {
+        return $this->hasMany(BugReport::className(), ['destination_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBugReports0()
+    {
+        return $this->hasMany(BugReport::className(), ['reporter_id' => 'id']);
+    }
+
+    /**
+     * Сохраняем картинку
+     * @param $filename
+     * @return bool
+     */
+    public function saveImage($filename)
+    {
+        $this->avatar = $filename;
+        return $this->save(false);
+    }
+
+    /**
+     * Если картинка есть - выведем путь. Если нет - то no-image
+     * @return string
+     */
+    public function getImage()
+    {
+        return ($this->avatar) ? '/uploads/' . $this->avatar : '/no-image.png';
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
     /**
      * {@inheritdoc}
      */
@@ -174,6 +260,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates password hash from password and sets it to the model
      *
      * @param string $password
+     * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
@@ -182,6 +269,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates "remember me" authentication key
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey()
     {
@@ -190,6 +278,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates new password reset token
+     * @throws \yii\base\Exception
      */
     public function generatePasswordResetToken()
     {
@@ -208,4 +297,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
 }

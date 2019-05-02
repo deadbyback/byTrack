@@ -2,8 +2,9 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/* @var $model SignupForm */
 
+use frontend\models\SignupForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -23,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'email') ?>
 
+                <?= $form->field($model, 'password')->passwordInput() ?>
+
                 <?= $form->field($model, 'first_name')->textInput() ?>
 
                 <?= $form->field($model, 'last_name')->textInput() ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

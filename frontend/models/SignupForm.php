@@ -15,6 +15,8 @@ class SignupForm extends Model
     public $password;
     public $first_name;
     public $last_name;
+    public $defaultRole = 'worker';
+    private $_defaultRole;
 
     /**
      * {@inheritdoc}
@@ -36,13 +38,11 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
 
+            ['first_name', 'string'],
             ['first_name', 'trim'],
-            ['first_name', 'required'],
-            ['first_name', 'string', 'max' => 20],
 
+            ['last_name', 'string'],
             ['last_name', 'trim'],
-            ['last_name', 'required'],
-            ['last_name', 'string', 'max' => 20],
         ];
     }
 
@@ -50,24 +50,31 @@ class SignupForm extends Model
      * Signs user up.
      *
      * @return bool whether the creating new account was successful and email was sent
+     * @throws \yii\base\Exception
+     * @throws \Exception
      */
     public function signup()
     {
         if (!$this->validate()) {
             return null;
         }
-        
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
+
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        if ($user->save())
+        {
+            $auth = Yii::$app->authManager;
+            $auth->assign($auth->getRole('worker'), $user->id);
+        }
         return $user->save() && $this->sendEmail($user);
-
     }
+
 
     /**
      * Sends confirmation email to user
