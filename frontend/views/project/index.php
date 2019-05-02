@@ -5,7 +5,7 @@ use common\models\User;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $projectSearchModel common\models\ProjectSearch */
 /* @var $memberSearchModel common\models\ProjectParticipantsSearch */
@@ -16,6 +16,7 @@ $this->title = Yii::t('app', 'Projects');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-index">
+
     <?php if (Yii::$app->user->can('admin')): ?>
     <h1><?= Html::encode( 'Addons for Admin')  ?></h1>
     <p>
@@ -38,9 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
         $memberTemplate = '';
     }
     ?>
-
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
      <div class="card" style="max-width: 49%; float: left">
     <h1><?= Html::encode(Yii::t('app', 'Projects')) ?></h1>
@@ -91,6 +89,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'user.username',
                 'label' => 'User',
                 'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->id == Yii::$app->user->id) {$rv = 'success';}
+                    else {$rv = '';}
+                    return ['class' => $rv];
+                }
             ],
             'user_role',
             [
@@ -100,7 +103,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
     ]); ?>
-    <?php Pjax::end(); ?>
 
     </div>
 </div>
