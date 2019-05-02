@@ -24,6 +24,9 @@ use yii\web\IdentityInterface;
  *
  * @property BugReport[] $bugReports
  * @property BugReport[] $bugReports0
+ * @property mixed avatar
+ * @property string first_name
+ * @property string last_name
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -62,14 +65,15 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE], //временная заглушка с STATUS_INACTIVE на STATUS_ACTIVE
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
+            [['username', 'auth_key', 'password_hash', 'email'], 'required'],// 'created_at', 'updated_at'
+            [['created_at', 'updated_at'], 'safe'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
-            [['id', 'first_name', 'last_name'], 'required'],
+            //[['id', 'first_name', 'last_name'], 'required'],
             [['id'], 'integer'],
             [['avatar'], 'string'],
             [['first_name', 'last_name', 'gender'], 'string', 'max' => 50],
@@ -256,6 +260,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates password hash from password and sets it to the model
      *
      * @param string $password
+     * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
@@ -264,6 +269,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates "remember me" authentication key
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey()
     {
@@ -272,6 +278,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates new password reset token
+     * @throws \yii\base\Exception
      */
     public function generatePasswordResetToken()
     {

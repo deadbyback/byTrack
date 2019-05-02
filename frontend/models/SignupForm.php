@@ -13,6 +13,8 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $first_name;
+    public $last_name;
     public $defaultRole = 'worker';
     private $_defaultRole;
 
@@ -36,6 +38,11 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
 
+            ['first_name', 'string'],
+            ['first_name', 'trim'],
+
+            ['last_name', 'string'],
+            ['last_name', 'trim'],
         ];
     }
 
@@ -43,38 +50,29 @@ class SignupForm extends Model
      * Signs user up.
      *
      * @return bool whether the creating new account was successful and email was sent
+     * @throws \yii\base\Exception
+     * @throws \Exception
      */
     public function signup()
     {
         if (!$this->validate()) {
             return null;
         }
-        
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->first_name = $this->first_name;
+        $user->last_name = $this->last_name;
 
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        //TODO: Разобраться, что не так с регистрацией!
-/*        if ($user->save()) {
+        if ($user->save())
+        {
             $auth = Yii::$app->authManager;
             $auth->assign($auth->getRole('worker'), $user->id);
-            echo 'Got it!';
-        }*/
-        $result = $user->save();
-        //$result = $user->save() && $this->sendEmail($user);
-        //echo 'Я всё!';
-
-
-
-        /*        $auth = Yii::$app->authManager;
-                $authorRole = $auth->getRole('worker');
-                $auth->assign($authorRole, $user->id);
-
-                $result = $user->save();*/
-        return $result;
+        }
+        return $user->save() && $this->sendEmail($user);
     }
 
 
