@@ -52,36 +52,68 @@ $statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
         'options'=>['style' => 'white-space:nowrap; width:100%; ',],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'bug_id',
             'title',
             [
                 'attribute' => 'severity',
                 'format' => 'text',
                 'filter' => $severityFilter,
-                'value' => 'severityName.name'
+                'value' => 'severityName.name',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->severity == 1) {$rv = 'danger';}
+                    elseif ($model->severity == 2) {$rv = 'warning';}
+                    elseif ($model->severity == 3) {$rv = 'info';}
+                    elseif ($model->severity == 4) {$rv = 'success';}
+                    else {$rv = '';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'priority',
                 'format' => 'text',
                 'filter' => $priorityFilter,
-                'value' => 'priorityName.name'
+                'value' => 'priorityName.name',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->priority == 1) {$rv = 'danger';}
+                    elseif ($model->priority == 2) {$rv = 'warning';}
+                    else {$rv = 'success';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'status',
                 'format' => 'text',
                 'filter' => $statusFilter,
-                'value' => 'statusName.name'
+                'value' => 'statusName.name',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->status == 1) {$rv = 'warning';}
+                    elseif ($model->status == 2) {$rv = 'danger';}
+                    elseif ($model->status == 3) {$rv = 'info';}
+                    elseif ($model->status == 4) {$rv = 'success';}
+                    elseif ($model->status == 5) {$rv = 'warning';}
+                    else {$rv='info';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'reporter_id',
                 'format' => 'text',
                 'value' => 'reporter.username',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->reporter_id == Yii::$app->user->id) {$rv = 'success';}
+                    else {$rv='';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'destination_id',
                 'format' => 'text',
                 'value' => 'destination.username',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->destination_id == Yii::$app->user->id) {$rv = 'success';}
+                    else {$rv='';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
