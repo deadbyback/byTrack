@@ -27,6 +27,7 @@ use yii\web\IdentityInterface;
  * @property mixed avatar
  * @property string first_name
  * @property string last_name
+ * @property mixed gender
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -156,6 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * {@inheritdoc}
+     * @throws NotSupportedException
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -285,6 +287,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+    /**
+     * Generates email verification token
+     * @throws \yii\base\Exception
+     */
     public function generateEmailVerificationToken()
     {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();

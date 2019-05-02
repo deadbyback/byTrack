@@ -15,9 +15,7 @@ class SignupForm extends Model
     public $password;
     public $first_name;
     public $last_name;
-    public $defaultRole = 'worker';
-    private $_defaultRole;
-
+    public $gender;
     /**
      * {@inheritdoc}
      */
@@ -63,6 +61,7 @@ class SignupForm extends Model
         $user->email = $this->email;
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
+        $user->gender = $this->gender;
 
         $user->setPassword($this->password);
         $user->generateAuthKey();
@@ -74,7 +73,6 @@ class SignupForm extends Model
         }
         return $user->save() && $this->sendEmail($user);
     }
-
 
     /**
      * Sends confirmation email to user

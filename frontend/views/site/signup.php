@@ -30,6 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'last_name')->textInput() ?>
 
+                <?= $form->field($model, 'gender',['wrapperOptions' =>['style' => 'display:inline-block']])
+                    ->inline(true)->radioList(['Male', 'Female']) ?>
+
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
