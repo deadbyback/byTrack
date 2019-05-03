@@ -1,8 +1,5 @@
 <?php
 
-use common\models\Project;
-use common\models\User;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -28,14 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     if (Yii::$app->user->can('admin'))
     {
-        $projectTemplate = '{view} {update} {delete} {report} {members}';
+        $projectTemplate = '{view} {update} {delete} {report}';
         $memberTemplate = '{view} {update} {delete}';
     } elseif (Yii::$app->user->can('manager'))
     {
-        $projectTemplate = '{update} {report} {members}';
+        $projectTemplate = '{update} {report}';
         $memberTemplate = '{update}';
     } else {
-        $projectTemplate = '{report} {members}';
+        $projectTemplate = '{report}';
         $memberTemplate = '';
     }
     ?>
@@ -59,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="glyphicon glyphicon-menu-right"></span>', ['bug-report/index', 'id' => $model->id], [
                           'title' => Yii::t('app', 'Go to reports'), 'class' =>'btn btn-xs',
                         ]);
-                      }
+                      },
                     ],
             ],
             ['class' => 'yii\grid\SerialColumn'],
@@ -82,13 +79,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'project_id',
                 'value' => 'project.title',
                 'label' => 'Project',
-                //'filter' => ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'title'),
             ],
             [
                 'attribute' => 'user_id',
                 'value' => 'user.username',
                 'label' => 'User',
-                //'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
                 'contentOptions' => function ($model, $key, $index, $grid) {
                     if ($model->user_id == Yii::$app->user->id) {$rv = 'success';}
                     else {$rv = '';}
@@ -99,6 +94,26 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => $memberTemplate,
+                'buttons' =>
+                    [
+                        'view' => function ($url, $model, $key)
+                        {
+                            return Html::a('<span class="glyphicon glyphicon-cog"></span>', ['project/view-member', 'id' => $model->id], [
+                                'title' => Yii::t('app', 'View this membership'),
+                            ]);
+                        },
+                        'update' => function ($url, $model, $key)
+                        {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['project/update-member', 'id' => $model->id], [
+                                'title' => Yii::t('app', 'Update this membership'),
+                            ]);
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['project/delete-member', 'id' => $model->id], [
+                                'title' => Yii::t('app', 'Delete this membership'),
+                            ]);
+                        }
+                    ],
             ],
         ],
 
