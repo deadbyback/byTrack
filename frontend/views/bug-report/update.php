@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <p>
-    <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+    <?= Html::a(Yii::t('app', 'Go back'), Yii::$app->request->referrer, ['class' => 'btn btn-info']) ?>
 </p>
 <div class="bug-report-update">
 

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Go back'), Yii::$app->request->referrer, ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=

@@ -8,8 +8,6 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-//use app\common\widgets\BackUrl;
-
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\BugReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */

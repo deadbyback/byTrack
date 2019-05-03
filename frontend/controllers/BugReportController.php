@@ -54,7 +54,7 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete'],
+                        'actions' => ['delete', 'delete-file'],
                         'roles' => ['admin'],
                     ],
                     [
@@ -171,7 +171,21 @@ class BugReportController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect('javascript:history.back()');
+        return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDeleteFile($id)
+    {
+        $this->findFile($id)->delete();
+
+        return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
     }
 
     /**
@@ -184,6 +198,19 @@ class BugReportController extends Controller
     protected function findModel($id)
     {
         if (($model = BugReport::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    /**
+     * @param $id
+     * @return File|null
+     * @throws NotFoundHttpException
+     */
+    protected function findFile($id)
+    {
+        if (($model = File::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
@@ -236,7 +263,7 @@ class BugReportController extends Controller
         {
                 $model->files = UploadedFile::getInstances($model, 'files');
                 if ($model->upload($bug_report->bug_id)) {
-                    return $this->redirect('javascript:history.back()');
+                    return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
                 }
         }
         return $this->render('uploadForm', [
