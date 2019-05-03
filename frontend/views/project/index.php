@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
      <div class="card" style="max-width: 49%; float: left">
-    <h1><?= Html::encode(Yii::t('app', 'Projects')) ?></h1>
+    <h1><?= Html::encode(Yii::t('app', 'Projects with your participation')) ?></h1>
     <?= GridView::widget([
         'dataProvider' => $projectDataProvider,
         'filterModel' => $projectSearchModel,
