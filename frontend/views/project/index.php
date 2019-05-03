@@ -82,15 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'project_id',
                 'value' => 'project.title',
                 'label' => 'Project',
-                'filter' => ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'title'),
+                //'filter' => ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'title'),
             ],
             [
-                'attribute' => 'id',
+                'attribute' => 'user_id',
                 'value' => 'user.username',
                 'label' => 'User',
-                'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
+                //'filter' => ArrayHelper::map(User::find()->asArray()->all(), 'id', 'username'),
                 'contentOptions' => function ($model, $key, $index, $grid) {
-                    if ($model->id == Yii::$app->user->id) {$rv = 'success';}
+                    if ($model->user_id == Yii::$app->user->id) {$rv = 'success';}
                     else {$rv = '';}
                     return ['class' => $rv];
                 }
