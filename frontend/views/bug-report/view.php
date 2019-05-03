@@ -11,7 +11,8 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
+    'url' => ['bug-report/index', 'id' => $model->project_id]];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>

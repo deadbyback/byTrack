@@ -8,7 +8,8 @@ use yii\helpers\Html;
 /** @var $uploadForm UploadForm */
 
 $this->title = Yii::t('app', 'Create Bug Report');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
+    'url' => ['bug-report/index', 'id' => $model->project_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>

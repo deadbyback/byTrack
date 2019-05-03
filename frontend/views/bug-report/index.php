@@ -3,6 +3,7 @@
 use common\models\PriorityName;
 use common\models\SeverityName;
 use common\models\StatusName;
+use common\models\User;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -97,6 +98,7 @@ $statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
                 'attribute' => 'reporter_id',
                 'format' => 'text',
                 'value' => 'reporter.username',
+                'filter' =>  ArrayHelper::map(User::find()->all(),'id','username'),
                 'contentOptions' => function ($model, $key, $index, $grid) {
                     if ($model->reporter_id == Yii::$app->user->id) {$rv = 'success';}
                     else {$rv='';}
@@ -107,6 +109,7 @@ $statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
                 'attribute' => 'destination_id',
                 'format' => 'text',
                 'value' => 'destination.username',
+                'filter' =>  ArrayHelper::map(User::find()->all(),'id','username'),
                 'contentOptions' => function ($model, $key, $index, $grid) {
                     if ($model->destination_id == Yii::$app->user->id) {$rv = 'success';}
                     else {$rv='';}

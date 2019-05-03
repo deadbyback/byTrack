@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'My Own Bug Reports');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
+    'url' => Yii::$app->request->referrer];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
