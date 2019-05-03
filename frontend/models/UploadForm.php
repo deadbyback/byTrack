@@ -4,10 +4,9 @@ namespace frontend\models;
 
 use common\models\File;
 use common\models\FileInReport;
+use Exception;
+use Throwable;
 use yii\base\Model;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\web\UploadedFile;
 use Yii;
 
@@ -31,6 +30,11 @@ class UploadForm extends Model
     }
 
 
+    /**
+     * @param $id
+     * @return bool
+     * @throws Throwable
+     */
     public function upload($id)
     {
         if (!$this->validate()) {
@@ -45,7 +49,8 @@ class UploadForm extends Model
             $transaction = $db->beginTransaction();
             try {
                 $inFile = new File();
-                $inFile->file = $filename . '.' . $file->extension;
+                $inFile->filename = $file->baseName . '.' . $file->extension;
+                $inFile->filepath = $filename . '.' . $file->extension;
                 $inFile->save();
                 $report = new FileInReport();
                 $report->bug_id = $id;
@@ -53,10 +58,10 @@ class UploadForm extends Model
                 $report->save();
 
                 $transaction->commit();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $transaction->rollBack();
                 throw $e;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $transaction->rollBack();
                 throw $e;
             }

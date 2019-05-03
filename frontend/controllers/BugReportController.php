@@ -263,7 +263,7 @@ class BugReportController extends Controller
         {
                 $model->files = UploadedFile::getInstances($model, 'files');
                 if ($model->upload($bug_report->bug_id)) {
-                    return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+                    return $this->redirect('view?id=' . $bug_report->bug_id);
                 }
         }
         return $this->render('uploadForm', [

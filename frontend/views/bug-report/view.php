@@ -85,7 +85,7 @@ YiiAsset::register($this);
     GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-                'file',
+                'filename',
             'created',
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -107,9 +107,6 @@ YiiAsset::register($this);
     ]) ?>
     <?php Pjax::end()?>
 <style>
-    table.detail-view {
-        table-layout: fixed;
-    }
 
     table.detail-view td {
         max-width: 100%;
