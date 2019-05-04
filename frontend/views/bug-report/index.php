@@ -85,12 +85,12 @@ $statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
                 'filter' => $statusFilter,
                 'value' => 'statusName.name',
                 'contentOptions' => function ($model, $key, $index, $grid) {
-                    if ($model->status == 1) {$rv = 'warning';}
+                    if ($model->status == 1) {$rv = '';}
                     elseif ($model->status == 2) {$rv = 'danger';}
                     elseif ($model->status == 3) {$rv = 'info';}
                     elseif ($model->status == 4) {$rv = 'success';}
-                    elseif ($model->status == 5) {$rv = 'warning';}
-                    else {$rv='info';}
+                    elseif ($model->status == 5) {$rv = '';}
+                    else {$rv='warning';}
                     return ['class' => $rv];
                 }
             ],
