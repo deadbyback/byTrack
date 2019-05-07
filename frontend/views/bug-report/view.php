@@ -4,20 +4,20 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $media common\models\File */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
+    'url' => ['bug-report/index', 'id' => $model->project_id]];
 $this->params['breadcrumbs'][] = $this->title;
-//$media = \common\models\File::findOne($id);
 YiiAsset::register($this);
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
-<?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+<?= Html::a(Yii::t('app', 'Go back'), ['bug-report/index', 'id' => $model->project_id], ['class' => 'btn btn-info']) ?>
 
 <div class="bug-report-view">
 
@@ -80,11 +80,12 @@ YiiAsset::register($this);
     ]) ?>
 <hr>
     <h2>Attached files</h2>
+    <?php Pjax::begin();?>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-                'file',
+                'filename',
             'created',
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -93,17 +94,19 @@ YiiAsset::register($this);
                   'download' => function ($url, $model, $key) {
                       return Html::a('<span class="glyphicon glyphicon-download-alt"></span>', ['bug-report/download', 'id' => $model->id], [
                           'title' => Yii::t('app', 'Download'), 'class' =>'btn btn-xs',
-                          'data-method' => 'post', 'data-pjax' => '0',
+                          'data-method' => 'post',
                       ]);
-                  }
+                  },
+                    'delete' => function ($url, $model, $key) {
+                      return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['bug-report/delete-file', 'id' => $model->id], [
+                          'title' => Yii::t('app', 'Delete'),]);
+                    }
                 ],
             ],
         ],
     ]) ?>
+    <?php Pjax::end()?>
 <style>
-    table.detail-view {
-        table-layout: fixed;
-    }
 
     table.detail-view td {
         max-width: 100%;

@@ -10,13 +10,13 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Update Bug Report: {name}', [
     'name' => $model->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['bug-report/index', 'id' => $model->project_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->bug_id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <p>
-    <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()', ['class' => 'btn btn-info']) ?>
+    <?= Html::a(Yii::t('app', 'Go back'), Yii::$app->request->referrer, ['class' => 'btn btn-info']) ?>
 </p>
 <div class="bug-report-update">
 

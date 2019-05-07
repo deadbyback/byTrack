@@ -101,7 +101,7 @@ class ProjectController extends Controller
         $model = new ProjectParticipants();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-member', 'id' => $model->id]);
+            return $this->redirect(['project/index', 'id' => $model->id]);
         }
 
         return $this->render('create-member', [
@@ -130,6 +130,24 @@ class ProjectController extends Controller
     }
 
     /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdateMember($id)
+    {
+        $model = $this->findParticipantsModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index', 'id' => $model->id]);
+        }
+
+        return $this->render('update-member', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Deletes an existing Project model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -141,6 +159,20 @@ class ProjectController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws StaleObjectException
+     * @throws Throwable
+     */
+    public function actionDeleteMember($id)
+    {
+        $this->findParticipantsModel($id)->delete();
 
         return $this->redirect(['index']);
     }

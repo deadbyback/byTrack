@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'My Own Bug Reports');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
+    'url' => Yii::$app->request->referrer];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
@@ -12,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Go back'), 'javascript:history.back()' , ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Go back'), Yii::$app->request->referrer , ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -56,7 +57,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     5 => 'Trivial',
                 ],
                 'value' => 'severityName.name',
-                'label' => Yii::t('app', 'Severity')
+                'label' => Yii::t('app', 'Severity'),
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->severity == 1) {$rv = 'danger';}
+                    elseif ($model->severity == 2) {$rv = 'warning';}
+                    elseif ($model->severity == 3) {$rv = 'info';}
+                    elseif ($model->severity == 4) {$rv = 'success';}
+                    else {$rv = '';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'priority',
@@ -67,7 +76,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     3 => 'Low',
                 ],
                 'value' => 'priorityName.name',
-                'label' => Yii::t('app', 'Priority')
+                'label' => Yii::t('app', 'Priority'),
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->priority == 1) {$rv = 'danger';}
+                    elseif ($model->priority == 2) {$rv = 'warning';}
+                    else {$rv = 'success';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'status',
@@ -81,12 +96,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     6 => 'In QA',
                 ],
                 'value' => 'statusName.name',
-                'label' => Yii::t('app', 'Status')
+                'label' => Yii::t('app', 'Status'),
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->status == 1) {$rv = 'warning';}
+                    elseif ($model->status == 2) {$rv = 'danger';}
+                    elseif ($model->status == 3) {$rv = 'info';}
+                    elseif ($model->status == 4) {$rv = 'success';}
+                    elseif ($model->status == 5) {$rv = 'warning';}
+                    else {$rv='info';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'attribute' => 'destination_id',
                 'format' => 'raw',
                 'value' => 'destination.username',
+                'contentOptions' => function ($model, $key, $index, $grid) {
+                    if ($model->destination_id == Yii::$app->user->id) {$rv = 'success';}
+                    else {$rv='';}
+                    return ['class' => $rv];
+                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

@@ -19,7 +19,7 @@ $this->title = 'My Yii Application';
         <h1><?= Yii::t('app', 'Hello!')?></h1>
 
         <p class="lead"><?= Yii::t('app', 'Welcome to bug tracking service.')?></p>
-        <p><?= Html::a(Yii::t('app', 'Welcome to byTrack!'), ['/'], ['class' => 'btn btn-lg btn-success'])?></p>
+        <p><?= Html::a(Yii::t('app', 'Welcome to byTrack!'), ['project/index'], ['class' => 'btn btn-lg btn-success'])?></p>
 
         </div>
 

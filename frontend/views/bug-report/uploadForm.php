@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('app', 'Upload files to: {name}', [
     'name' => $bug_report->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => 'javascript:history.back()'];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'), 'url' => Yii::$app->request->referrer];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>

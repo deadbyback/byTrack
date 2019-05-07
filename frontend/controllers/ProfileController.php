@@ -2,13 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Project;
 use frontend\models\ImageUpload;
-use frontend\models\UploadForm;
 use Yii;
 use common\models\User;
-use common\models\UserSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
@@ -34,14 +33,25 @@ class ProfileController extends Controller
 
     public function actionIndex()
     {
+        $id = Yii::$app->user->id;
+        $dataProvider = new ActiveDataProvider([
+            'query' => Project::find()
+                ->innerJoin('{{project_participants}}', '{{project_participants}}.[[project_id]] = {{project}}.[[id]]' )
+                ->andWhere('{{project_participants}}.[[user_id]] = :id', [':id' => $id]),
+            'pagination' => [
+                'pageSize' => 3,
+            ],
+        ]);
+
         return $this->render('index', [
             'model' => $this->findModel(),
+            'listDataProvider' => $dataProvider,
         ]);
     }
 
     /**
      * Updates an existing Profile model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'index' page.
      * @return mixed
      */
     public function actionUpdate()

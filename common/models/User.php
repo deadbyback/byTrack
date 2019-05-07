@@ -4,6 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -21,12 +22,12 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
- *
  * @property BugReport[] $bugReports
  * @property BugReport[] $bugReports0
  * @property mixed avatar
  * @property string first_name
  * @property string last_name
+ * @property mixed gender
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -65,7 +66,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE], //временная заглушка с STATUS_INACTIVE на STATUS_ACTIVE
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            [['username', 'auth_key', 'password_hash', 'email'], 'required'],// 'created_at', 'updated_at'
+            [['username', 'auth_key', 'password_hash', 'email'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
@@ -73,7 +74,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
-            //[['id', 'first_name', 'last_name'], 'required'],
             [['id'], 'integer'],
             [['avatar'], 'string'],
             [['first_name', 'last_name', 'gender'], 'string', 'max' => 50],
@@ -103,7 +103,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getBugReports()
     {
@@ -111,7 +111,15 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     */
+    public function getAuthAssignment()
+    {
+        return $this->hasOne(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
      */
     public function getBugReports0()
     {
@@ -156,6 +164,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * {@inheritdoc}
+     * @throws NotSupportedException
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -285,6 +294,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+    /**
+     * Generates email verification token
+     * @throws \yii\base\Exception
+     */
     public function generateEmailVerificationToken()
     {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();

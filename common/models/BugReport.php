@@ -29,8 +29,6 @@ class BugReport extends ActiveRecord
      * {@inheritdoc}
      */
 
-
-
     public static function tableName()
     {
         return '{{%bug_report}}';
@@ -67,9 +65,9 @@ class BugReport extends ActiveRecord
             'severity' => Yii::t('app', 'Severity'),
             'priority' => Yii::t('app', 'Priority'),
             'status' => Yii::t('app', 'Status'),
-            'reporter_id' => Yii::t('app', 'Reporter ID'),
-            'destination_id' => Yii::t('app', 'Destination ID'),
-            'project_id' => Yii::t('app', 'Project ID'),
+            'reporter_id' => Yii::t('app', 'Reporter'),
+            'destination_id' => Yii::t('app', 'Destination'),
+            'project_id' => Yii::t('app', 'Project'),
         ];
     }
 
@@ -103,12 +101,6 @@ class BugReport extends ActiveRecord
     public function getPriorityName()
     {
         return $this->hasOne(PriorityName::className(), ['priority_id' => 'priority']);
-    }
-
-
-    public function getAuthorId()
-    {
-        return Yii::$app->user->getId();
     }
 
     /**
