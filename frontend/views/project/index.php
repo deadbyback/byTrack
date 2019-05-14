@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="project-index">
 
     <?php if (Yii::$app->user->can('admin')): ?>
-    <h1><?= Html::encode( 'Addons for Admin')  ?></h1>
+    <h1><?= Html::encode( 'Admin\'s power!')  ?></h1>
     <p>
         <?= Html::a(Yii::t('app', 'Create Project'), ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Join a member'), ['create-member'], ['class' => 'btn btn-success']) ?>

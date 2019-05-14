@@ -33,7 +33,7 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-fixed-top',//если что - вернуть navbar-inverse
+            'class' => 'navbar navbar-fixed-top',
         ],
     ]);
 
@@ -58,7 +58,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Bug Report', 'url' => ['/bug-report/index'],];
+        $menuItems[] = ['label' => 'Projects', 'url' => ['/project/index'],];
         $menuItems[] = ['label' => 'Profile', 'url' => ['profile/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
