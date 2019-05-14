@@ -114,6 +114,7 @@ class BugReportController extends Controller
         $model = new BugReport();
         $uploadForm = new UploadForm();
         $model->reporter_id = Yii::$app->user->id;
+        $model->status = '1';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
@@ -281,9 +282,9 @@ class BugReportController extends Controller
     {
         ini_set('max_execution_time', 5 * 60);
         $model = File::findOne($id);
-        $filename = $model->file;
+        $filename = $model->filename;
         $path = Yii::getAlias('@web') . '/files';
-        $file = $path . '/' . $filename;
+        $file = $path . '/' . $model->filepath;
 
         if (file_exists($file)) {
             return Yii::$app->response->sendFile($file);
