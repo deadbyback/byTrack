@@ -15,6 +15,8 @@ use yii\db\Expression;
  *
  * @property FileInReport[] $fileInReports
  * @property Expression created
+ * @property string filepath
+ *@property string filename
  */
 class File extends \yii\db\ActiveRecord
 {
@@ -32,7 +34,7 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['file'], 'string'],
+            [['filepath', 'filename'], 'string'],
             [['created'], 'safe'],
         ];
     }
@@ -57,7 +59,8 @@ class File extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'file' => 'File',
+            'filename' => 'File Name',
+            'filepath' => 'File Path',
             'created' => 'Create Date',
         ];
     }
@@ -68,6 +71,16 @@ class File extends \yii\db\ActiveRecord
     public function getFileInReports()
     {
         return $this->hasMany(FileInReport::className(), ['file_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getFilesInReports()
+    {
+        return $this->hasMany(BugReport::className(), ['bug_id' => 'bug_id'])
+            ->viaTable('file_in_report', ['file_id' => 'id']);
     }
 
     /**

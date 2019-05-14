@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\BugReport;
 use common\models\File;
 use common\models\FileInReport;
 use Exception;
@@ -40,6 +41,7 @@ class UploadForm extends Model
         if (!$this->validate()) {
             return false;
         }
+        $report = BugReport::findOne($id);
 
         foreach ($this->files as $file) {
             $filename = strtolower(md5_file($file->tempName));
@@ -48,14 +50,12 @@ class UploadForm extends Model
             $db = Yii::$app->db;
             $transaction = $db->beginTransaction();
             try {
+
                 $inFile = new File();
                 $inFile->filename = $file->baseName . '.' . $file->extension;
                 $inFile->filepath = $filename . '.' . $file->extension;
                 $inFile->save();
-                $report = new FileInReport();
-                $report->bug_id = $id;
-                $report->file_id = $inFile->id;
-                $report->save();
+                $report->link('files', $inFile);
 
                 $transaction->commit();
             } catch (Exception $e) {

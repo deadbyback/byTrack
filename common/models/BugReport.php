@@ -117,6 +117,16 @@ class BugReport extends ActiveRecord
         return $this->hasMany(FileInReport::className(), ['bug_id' => 'bug_id']);
     }
 
+    /**
+     * @return ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getFiles()
+    {
+        return $this->hasMany(File::className(), ['id' => 'file_id'])
+            ->viaTable('file_in_report', ['bug_id' => 'bug_id']);
+    }
+
     public function getProject()
     {
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
