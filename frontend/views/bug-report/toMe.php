@@ -95,11 +95,6 @@ $statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
                 'attribute' => 'reporter_id',
                 'format' => 'raw',
                 'value' => 'reporter.username',
-                'contentOptions' => function ($model, $key, $index, $grid) {
-                    if ($model->destination_id == Yii::$app->user->id) {$rv = 'success';}
-                    else {$rv='';}
-                    return ['class' => $rv];
-                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
