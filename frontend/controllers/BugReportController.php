@@ -113,6 +113,11 @@ class BugReportController extends Controller
     public function actionResolve($id)
     {
         $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $model->status = 4;
@@ -133,6 +138,11 @@ class BugReportController extends Controller
     public function actionClose($id)
     {
         $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $model->status = 2;
@@ -153,6 +163,11 @@ class BugReportController extends Controller
     public function actionInProgress($id)
     {
         $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $model->status = 3;
@@ -173,6 +188,11 @@ class BugReportController extends Controller
     public function actionReopen($id)
     {
         $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $model->status = 5;
@@ -193,6 +213,11 @@ class BugReportController extends Controller
     public function actionInQA($id)
     {
         $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $model->status = 6;
