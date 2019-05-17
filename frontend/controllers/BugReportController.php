@@ -49,7 +49,8 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download'],
+                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download',
+                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -102,6 +103,112 @@ class BugReportController extends Controller
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
         ]);
+    }
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionResolve($id)
+    {
+        $model = BugReport::findOne($id);
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 4;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionClose($id)
+    {
+        $model = BugReport::findOne($id);
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 2;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionInProgress($id)
+    {
+        $model = BugReport::findOne($id);
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 3;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionReopen($id)
+    {
+        $model = BugReport::findOne($id);
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 5;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionInQA($id)
+    {
+        $model = BugReport::findOne($id);
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 6;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
     }
 
     /**
