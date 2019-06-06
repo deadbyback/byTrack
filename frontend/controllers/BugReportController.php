@@ -50,7 +50,7 @@ class BugReportController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download',
-                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress'],
+                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress', 'log-work'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -423,6 +423,33 @@ class BugReportController extends Controller
         } else {
             throw new NotFoundHttpException("Сan't find {$filename} file");
         }
+    }
+    /*TODO: Доделать переадресацию репорта*/
+    public function actionResend($id, $sender, $recipient)
+    {
+        $model = $this->findModel($id);
+
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->reporter_id = $sender;
+            $model->destination_id = $recipient;
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    /*TODO: Реализовать логику логирования*/
+    public function actionLogWork()
+    {
+        return $this->render('logWork');
     }
 
 }

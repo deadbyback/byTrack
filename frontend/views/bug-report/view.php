@@ -1,5 +1,7 @@
 <?php
 
+use kartik\widgets\DateTimePicker;
+use yii\bootstrap\Modal;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
@@ -108,7 +110,50 @@ YiiAsset::register($this);
         );}
     }
     ?>
-
+    <?php /*TODO: Продумать переход на DatePicker
+        echo  Html::a(Yii::t('app', 'Log work'), ['bug-report/log-work']);*/ ?>
+    <div class="row">
+        <div class="col-sm-4">
+            <div style="margin-top: 20px">
+                <?php
+                Modal::begin([
+                    'header' => 'Logging Work to this bug-report',
+                    //'toggleButton' => ['label' => 'Log Work', 'class' => 'btn btn-primary'],
+                ]);
+                ?>
+                <div class="row" style="margin-bottom: 8px">
+                    <div class="col-sm-6">
+                        <?=
+                        DateTimePicker::widget([
+                            'name' => 'date_in_modal_1',
+                            'options' => ['placeholder' => 'Start time...'],
+                            'pluginOptions' => ['autoclose' => true]
+                        ]); ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <?=
+                        DateTimePicker::widget([
+                            'name' => 'date_in_modal_2',
+                            'options' => ['placeholder' => 'End time...'],
+                            'pluginOptions' => ['autoclose' => true]
+                        ]); ?>
+                    </div>
+                </div>
+                <?= Html::submitButton(Yii::t('app', 'Log'), ['class' => 'btn btn-primary']) ?>
+                <?php Modal::end(); ?>
+            </div>
+        </div>
+    </div>
+    <?php
+    /*TODO: Модальное окно с формой для пересылки данного репорта другому пользователю*/
+/*    $sender = Yii::$app->user->id;
+    $recipient = 0;
+    if  (Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id){
+        echo Html::a(Yii::t('app', 'Resend report to...'), ['bug-report/resend', 'id' => $key, 'sender' => $sender, 'recipient' => $recipient], [
+                'class' => 'btn btn-primary col-xs-2 col-md-2',
+                'style' => 'margin:5px',]
+        );}*/
+    ?>
 
 
     <?= DetailView::widget([
