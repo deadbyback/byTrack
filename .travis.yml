@@ -1,65 +1,20 @@
-#
-# Travis Setup
-#
-
-# use ubuntu trusty for newer version of nodejs, used for JS testing
-dist: trusty
-
-# faster builds on new travis setup not using sudo
-# temporary disable, see https://github.com/travis-ci/travis-ci/issues/6842
-#sudo: false
-sudo: required
-group: edge
-
-# build only on master branches
-# commented as this prevents people from running builds on their forks:
-# https://github.com/yiisoft/yii2/commit/bd87be990fa238c6d5e326d0a171f38d02dc253a
-#branches:
-#  only:
-#    - master
-#    - 2.1
-
-
-#
-# Test Matrix
-#
-
 language: php
 
+php:
+  - 5.6
+  - 7.0
 
-services:
+matrix:
+  #allow_failures:
+    #- php: 7.0
 
-  frontend:
-    build: frontend
-    ports:
-      - 20080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer global require fxp/composer-asset-plugin:~1.1.3
+  - travis_retry composer install ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
-  backend:
-    build: backend
-    ports:
-      - 21080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
+script:
+  - phpunit --coverage-text --coverage-clover=coverage.clover
 
-  mysql:
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=verysecret
-      - MYSQL_DATABASE=bytrack
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=
-
-  #pgsql:
-  #  image: postgres:9.5
-  #  environment:
-  #    - POSTGRES_DB=yii2advanced
-  #    - POSTGRES_USER=yii2advanced
-  #    - POSTGRES_PASSWORD=secret
+after_script:
+  - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
