@@ -48,7 +48,7 @@ use yii\widgets\Pjax;
 ?>
 
 <?php Pjax::end(); ?>
-dfqwddfewfefwf
+This module is on development now!
 <style>
     .menu {
     }

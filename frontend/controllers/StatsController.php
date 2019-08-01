@@ -47,17 +47,17 @@ class StatsController extends Controller
         $localProjectIds = Project::find()->select('id')->all();
         $localProjectTitles = Project::find()->select('title')->all();
         $localProjectMembersCount = ProjectParticipants::find()->select('project_id', count('user_id'))->distinct()->groupBy('project_id');
-        var_dump($localProjectIds);
+/*        var_dump($localProjectIds);
         var_dump($localProjectMembersCount);
         var_dump($projectMembersCount);
-        var_dump($projectCount); die();
-        return $this->render(['project',
-            'projectCount' => $projectCount,
+        var_dump($projectCount); die();*/
+        return $this->render('project',
+            ['projectCount' => $projectCount,
             'projectMembersCount' => $projectMembersCount,
             'localProjectIds' => $localProjectIds,
             'localProjectTitles' => $localProjectTitles,
-            'localProjectMembersCount' => $localProjectMembersCount,
-        ]);
+            'localProjectMembersCount' => $localProjectMembersCount,]
+        );
     }
 
     public function actionStatus()
@@ -104,11 +104,15 @@ class StatsController extends Controller
     /*TODO: Реализовать запросы*/
     public function actionUserReport()
     {
-        $userId = User::find()->select('username')->all();
+        $username = User::find()->select('username')->all();
         //$userReportsCount = BugReport::find()->select('reporter_id', count('bug_id'))->distinct();
-        $userReportsCount = BugReport::find()->innerJoin('{{user}}', '{{user}}.id = {{bug-report}}.[[reporter_id]]')->
-        var_dump($userReportsCount);
-        var_dump($userId);die();
+        $userId = User::find()->select('id')->all();
+        $userReportersList = BugReport::find()->select(['title'])->count('title');
+        $userReportersList->andWhere('reporter_id IN :id', [':id' => $userId])
+        ->andWhere('destination_id IN :id', [':id' => $userId]);
+        var_dump($this->asJson($userReportersList));
+        //var_dump($userId);
+        die();
         //return $this->render('user-report');
     }
 
