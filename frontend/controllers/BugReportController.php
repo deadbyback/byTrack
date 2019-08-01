@@ -4,9 +4,11 @@ namespace frontend\controllers;
 
 use common\models\File;
 use frontend\models\UploadForm;
+use frontend\models\CommentForm;
 use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
+use common\models\Comment;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -50,7 +52,7 @@ class BugReportController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download',
-                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress', 'log-work'],
+                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress', 'log-work', 'comment'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -93,6 +95,10 @@ class BugReportController extends Controller
         $query = File::find()
             ->innerJoin('{{file_in_report}}', '{{file_in_report}}.[[file_id]] = {{file}}.[[id]]' )
             ->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
+        
+
+        $comments = $this->findModel($id)->comments;
+        $commentForm = new CommentForm();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -102,6 +108,8 @@ class BugReportController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
+            'comments' => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
     /**
@@ -349,6 +357,22 @@ class BugReportController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    protected function findComment($id)
+    {
+        if (($model = Comment::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findAllCommentsOfReport($id)
+    {
+        if (($model = Comment::findAll($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
     public function actionFind()
     {
         $id = Yii::$app->user->id;
@@ -421,7 +445,7 @@ class BugReportController extends Controller
         if (file_exists($file)) {
             return Yii::$app->response->sendFile($file);
         } else {
-            throw new NotFoundHttpException("Сan't find {$filename} file");
+            throw new NotFoundHttpException("Сan't find {$file->filename} file");
         }
     }
     /*TODO: Доделать переадресацию репорта*/
@@ -450,6 +474,26 @@ class BugReportController extends Controller
     public function actionLogWork()
     {
         return $this->render('logWork');
+    }
+
+    public function actionComment($id)
+    {
+/*         $bug_report = $this->findModel($id);
+        $comments = $this->findAllCommentsOfReport($id);
+        $author = Yii::$app->user->identity->id;
+        var_dump($comments); die; */
+
+        $model = new CommentForm();
+            
+        if(Yii::$app->request->isPost)
+        {
+            $model->load(Yii::$app->request->post());
+            if($model->saveComment($id))
+            {
+                Yii::$app->getSession()->setFlash('comment', 'Done!');
+                return $this->redirect(['view', 'id' => $model->bug_id]);
+            }
+        }
     }
 
 }

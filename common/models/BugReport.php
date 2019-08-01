@@ -132,4 +132,9 @@ class BugReport extends ActiveRecord
     {
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
     }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['bug_id' => 'bug_id']);
+    }
 }

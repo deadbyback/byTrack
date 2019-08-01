@@ -146,6 +146,11 @@ class User extends ActiveRecord implements IdentityInterface
         return ($this->avatar) ? '/uploads/' . $this->avatar : '/no-image.png';
     }
 
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
     /**
      * {@inheritdoc}
      * @return UserQuery the active query used by this AR class.
