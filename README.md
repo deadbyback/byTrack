@@ -61,5 +61,5 @@ environments/            contains environment-based overrides
 VERSION TREE
 -------------------
 ```
-v 0.1
+v 0.3a
 ```
