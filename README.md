@@ -17,8 +17,10 @@ deploying the application in different environments.
 
 Documentation is at [docs/guide/README.md](common/README.md).
 
-Latest Version - v0.2.3
+Latest Stable Version - v0.2.3
 [![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
+
+Latest Dev Version - v0.3a
 
 DIRECTORY STRUCTURE
 -------------------
@@ -61,5 +63,14 @@ environments/            contains environment-based overrides
 VERSION TREE
 -------------------
 ```
+v 0.1
+v 0.1.1
+v 0.1.2
+v 0.1.3
+v 0.1.4
+v 0.2
+v 0.2.1
+v 0.2.2
+v 0.2.3
 v 0.3a
 ```
