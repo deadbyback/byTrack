@@ -8,6 +8,7 @@ use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use yii\bootstrap\ButtonDropdown;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\BugReport */
@@ -64,7 +65,7 @@ YiiAsset::register($this);
             ],
             'options' => [
                 'class' => 'btn btn-default',
-                'style' => 'margin:5px; text-align: right',
+                'style' => "margin: 5px; float: right",
             ],
             'split' => false,
         ]);
@@ -112,13 +113,13 @@ YiiAsset::register($this);
     ?>
     <?php /*TODO: Продумать переход на DatePicker
         echo  Html::a(Yii::t('app', 'Log work'), ['bug-report/log-work']);*/ ?>
-    <div class="row">
         <div class="col-sm-4">
-            <div style="margin-top: 20px">
+            <div style="margin: 5px">
                 <?php
                 Modal::begin([
                     'header' => 'Logging Work to this bug-report',
-                    //'toggleButton' => ['label' => 'Log Work', 'class' => 'btn btn-primary'],
+                    'toggleButton' => ['label' => 'Log Work', 'class' => 'btn btn-primary'],
+                    'options' => ['close' => true]
                 ]);
                 ?>
                 <div class="row" style="margin-bottom: 8px">
@@ -139,11 +140,11 @@ YiiAsset::register($this);
                         ]); ?>
                     </div>
                 </div>
-                <?= Html::submitButton(Yii::t('app', 'Log'), ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Log '), ['class' => 'btn btn-primary']) ?>
                 <?php Modal::end(); ?>
             </div>
         </div>
-    </div>
+
     <?php
     /*TODO: Модальное окно с формой для пересылки данного репорта другому пользователю*/
 /*    $sender = Yii::$app->user->id;
@@ -191,6 +192,7 @@ YiiAsset::register($this);
         ],
     ]) ?>
 <hr>
+               
     <h2>Attached files</h2>
     <?php Pjax::begin();?>
     <?=
@@ -203,12 +205,12 @@ YiiAsset::register($this);
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{delete} {download}',
                 'buttons' => [
-                  'download' => function ($url, $model, $key) {
+                    'download' => function ($url, $model, $key) {
                       return Html::a('<span class="glyphicon glyphicon-download-alt"></span>', ['bug-report/download', 'id' => $model->id], [
                           'title' => Yii::t('app', 'Download'), 'class' =>'btn btn-xs',
                           'data-method' => 'post',
                       ]);
-                  },
+                    },
                     'delete' => function ($url, $model, $key) {
                       return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['bug-report/delete-file', 'id' => $model->id], [
                           'title' => Yii::t('app', 'Delete'),]);
@@ -218,6 +220,39 @@ YiiAsset::register($this);
         ],
     ]) ?>
     <?php Pjax::end()?>
+
+<hr>
+<?php Pjax::begin();?>
+<?= $this->render('/bug-report/comment', [
+                 'report'=>$model,
+                 'comments'=>$comments,
+                 'commentForm'=>$commentForm
+             ])?>
+<?php Pjax::end()?>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'Yii::$app->iser->identity->username'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://byback.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            
+
 <style>
 
     table.detail-view td {
