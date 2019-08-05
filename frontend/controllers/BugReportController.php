@@ -439,13 +439,13 @@ class BugReportController extends Controller
         ini_set('max_execution_time', 5 * 60);
         $model = File::findOne($id);
         $filename = $model->filename;
-        $path = Yii::getAlias('@web') . '/files';
+        $path = Yii::getAlias('@app') . '/web/files';
         $file = $path . '/' . $model->filepath;
-
+        
         if (file_exists($file)) {
-            return Yii::$app->response->sendFile($file);
+            return Yii::$app->response->sendFile($file, $filename);
         } else {
-            throw new NotFoundHttpException("Сan't find {$file->filename} file");
+            throw new NotFoundHttpException("Сan't find {$filename} file");
         }
     }
     /*TODO: Доделать переадресацию репорта*/
