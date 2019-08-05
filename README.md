@@ -9,12 +9,13 @@
 byTrack - bug-tracking system based on [Yii 2](http://www.yiiframework.com/) application best for
 developing complex Web applications with multiple tiers.
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/deadbyback/byTrack/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/deadbyback/byTrack/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/deadbyback/byTrack/badges/build.png?b=master)](https://scrutinizer-ci.com/g/deadbyback/byTrack/build-status/master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/deadbyback/byTrack/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
+Documentation is at [docs/guide/README.md](common/README.md).
 
+<<<<<<< test-v0.3
 Documentation is at [docs/guide/README.md](common/README.md).
 
 Latest Stable Version - v0.2.3
@@ -74,3 +75,5 @@ v 0.2.2
 v 0.2.3
 v 0.3a
 ```
+=======
+Latest Version - v0.2.3
