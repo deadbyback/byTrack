@@ -72,8 +72,6 @@ v 0.1.4
 v 0.2
 v 0.2.1
 v 0.2.2
-v 0.2.3
-v 0.3a
+v 0.2.3         <---- You are here!
+v 0.3a          <---- On development
 ```
-=======
-Latest Version - v0.2.3
