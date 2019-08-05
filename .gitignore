@@ -35,5 +35,8 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
+frontend/web/uploads/*
+frontend/web/files/*
 
-frontend/web/uploads
+# vscode file
+launch.json
