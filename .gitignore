@@ -37,6 +37,7 @@ phpunit.phar
 # ignore generated files
 frontend/web/uploads/*
 frontend/web/files/*
+uploads/
 
 # vscode file
 launch.json
