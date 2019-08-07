@@ -58,4 +58,11 @@ return [
 
     ],
     'params' => $params,
+    'modules' => [
+        'comments' => [
+            'class' => 'rmrevin\yii\module\Comments\Module',
+            'userIdentityClass' => 'common\models\User',
+            'useRbac' => false,
+        ]
+    ],
 ];
