@@ -96,10 +96,6 @@ class BugReportController extends Controller
             ->innerJoin('{{file_in_report}}', '{{file_in_report}}.[[file_id]] = {{file}}.[[id]]' )
             ->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
         
-
-        $comments = $this->findModel($id)->comments;
-        $commentForm = new CommentForm();
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 5],
@@ -108,8 +104,6 @@ class BugReportController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
-            'comments' => $comments,
-            'commentForm' => $commentForm,
         ]);
     }
     /**
