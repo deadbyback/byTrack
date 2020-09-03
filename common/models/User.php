@@ -29,7 +29,7 @@ use yii\web\IdentityInterface;
  * @property string last_name
  * @property mixed gender
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, \rmrevin\yii\module\Comments\interfaces\CommentatorInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -144,6 +144,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getImage()
     {
         return ($this->avatar) ? '/uploads/' . $this->avatar : '/no-image.png';
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 
     /**
@@ -311,4 +316,19 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+
+    public function getCommentatorAvatar()
+    {
+        return '/uploads/' . $this->avatar;
+    }
+
+    public function getCommentatorName()
+    {
+        return $this->username;
+    }
+
+    public function getCommentatorUrl()
+    {
+        return false; // or false, if user does not have a public page
+    }
 }

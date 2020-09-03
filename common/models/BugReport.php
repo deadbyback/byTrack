@@ -44,10 +44,11 @@ class BugReport extends ActiveRecord
             [['description', 'playback_steps'], 'string'],
             [['reporter_id', 'destination_id'], 'safe'],
             [['title'], 'string', 'max' => 40],
-            [['severity', 'priority', 'status'], 'string', 'max' => 16],
+            [['severity', 'priority'], 'integer'],
+            //['status', 'safe'],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
             [['reporter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reporter_id' => 'id']],
-            [['project_id'], 'string'],
+            [['project_id'], 'integer'],
             [['project_id'], 'exist', 'skipOnEmpty' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']]
         ];
     }
@@ -117,8 +118,23 @@ class BugReport extends ActiveRecord
         return $this->hasMany(FileInReport::className(), ['bug_id' => 'bug_id']);
     }
 
+    /**
+     * @return ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getFiles()
+    {
+        return $this->hasMany(File::className(), ['id' => 'file_id'])
+            ->viaTable('file_in_report', ['bug_id' => 'bug_id']);
+    }
+
     public function getProject()
     {
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['bug_id' => 'bug_id']);
     }
 }

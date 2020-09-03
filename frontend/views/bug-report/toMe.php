@@ -1,5 +1,9 @@
 <?php
 
+use common\models\PriorityName;
+use common\models\SeverityName;
+use common\models\StatusName;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,6 +11,14 @@ $this->title = Yii::t('app', 'Bug Reports addressed to me');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bug Reports'),
     'url' => Yii::$app->request->referrer];
 $this->params['breadcrumbs'][] = $this->title;
+
+$severityQuery = SeverityName::find()->all();
+$priorityQuery = PriorityName::find()->all();
+$statusQuery = StatusName::find()->all();
+
+$severityFilter = ArrayHelper::map($severityQuery,'severity_id','name');
+$priorityFilter = ArrayHelper::map($priorityQuery,'priority_id','name');
+$statusFilter = ArrayHelper::map($statusQuery,'status_id','name');
 ?>
 <h1>Welcome,ID: <?= Yii::$app->user->id ?></h1>
 <div class="bug-report-to-me">
@@ -40,14 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'severity',
-                'format' => 'raw',
-                'filter' => [
-                    1 => 'Blocker',
-                    2 => 'Critical',
-                    3 => 'Major',
-                    4 => 'Minor',
-                    5 => 'Trivial',
-                ],
+                'format' => 'text',
+                'filter' => $severityFilter,
                 'value' => 'severityName.name',
                 'contentOptions' => function ($model, $key, $index, $grid) {
                     if ($model->severity == 1) {$rv = 'danger';}
@@ -60,12 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'priority',
-                'format' => 'raw',
-                'filter' => [
-                    1 => 'High',
-                    2 => 'Medium',
-                    3 => 'Low',
-                ],
+                'format' => 'text',
+                'filter' => $priorityFilter,
                 'value' => 'priorityName.name',
                 'contentOptions' => function ($model, $key, $index, $grid) {
                     if ($model->priority == 1) {$rv = 'danger';}
@@ -76,23 +78,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
-                'format' => 'raw',
-                'filter' => [
-                    1 => 'Open',
-                    2 => 'Closed',
-                    3 => 'In Progress',
-                    4 => 'Resolved',
-                    5 => 'Reopened',
-                    6 => 'In QA',
-                ],
+                'format' => 'text',
+                'filter' => $statusFilter,
                 'value' => 'statusName.name',
                 'contentOptions' => function ($model, $key, $index, $grid) {
-                    if ($model->status == 1) {$rv = 'warning';}
+                    if ($model->status == 1) {$rv = '';}
                     elseif ($model->status == 2) {$rv = 'danger';}
                     elseif ($model->status == 3) {$rv = 'info';}
                     elseif ($model->status == 4) {$rv = 'success';}
-                    elseif ($model->status == 5) {$rv = 'warning';}
-                    else {$rv='info';}
+                    elseif ($model->status == 5) {$rv = '';}
+                    else {$rv='warning';}
                     return ['class' => $rv];
                 }
             ],
@@ -100,11 +95,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'reporter_id',
                 'format' => 'raw',
                 'value' => 'reporter.username',
-                'contentOptions' => function ($model, $key, $index, $grid) {
-                    if ($model->destination_id == Yii::$app->user->id) {$rv = 'success';}
-                    else {$rv='';}
-                    return ['class' => $rv];
-                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

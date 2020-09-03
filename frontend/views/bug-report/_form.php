@@ -46,9 +46,9 @@ $project_items = ArrayHelper::map($projects, 'id', 'title');
     <?php echo $form->field($model, 'priority')
         ->radioList([1 => 'High', 2 => 'Medium', 3 => 'In Low',], ['multiple' => false]); ?>
 
-    <?php echo $form->field($model, 'status')
+    <?php /* echo $form->field($model, 'status')
         ->radioList([1 => 'Open', 2 => 'Closed', 3 => 'In progress',
-        4 => 'Resolved', 5 => 'Reopened', 6 => 'In QA'], ['multiple' => false]); ?>
+        4 => 'Resolved', 5 => 'Reopened', 6 => 'In QA'], ['multiple' => false]); */ ?>
 
     <?= $form->field($model, 'destination_id')
         ->dropDownList($items); ?>

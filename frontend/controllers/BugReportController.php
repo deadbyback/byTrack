@@ -4,9 +4,11 @@ namespace frontend\controllers;
 
 use common\models\File;
 use frontend\models\UploadForm;
+use frontend\models\CommentForm;
 use Yii;
 use common\models\BugReport;
 use common\models\BugReportSearch;
+use common\models\Comment;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -49,7 +51,8 @@ class BugReportController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download'],
+                        'actions' => ['find', 'to-me', 'create', 'update', 'index', 'view', 'upload', 'download',
+                            'resolve', 'reopen', 'in-q-a', 'close', 'in-progress', 'log-work', 'comment'],
                         'roles' => ['worker', 'admin', 'manager'],
                     ],
                     [
@@ -92,7 +95,7 @@ class BugReportController extends Controller
         $query = File::find()
             ->innerJoin('{{file_in_report}}', '{{file_in_report}}.[[file_id]] = {{file}}.[[id]]' )
             ->andWhere('{{file_in_report}}.[[bug_id]] = :bug_id', [':bug_id' => $id]);
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 5],
@@ -102,6 +105,137 @@ class BugReportController extends Controller
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
         ]);
+    }
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionResolve($id)
+    {
+        $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 4;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionClose($id)
+    {
+        $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 2;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionInProgress($id)
+    {
+        $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 3;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionReopen($id)
+    {
+        $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 5;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    public function actionInQA($id)
+    {
+        $model = BugReport::findOne($id);
+        if  (!(Yii::$app->user->id == $model->reporter_id || Yii::$app->user->id == $model->destination_id))
+        {
+            Yii::$app->session->setFlash('danger', 'You have not permissions to change "' . $model->title . '"\' status!');
+            return $this->redirect(['view', 'id' => $model->bug_id]);
+        }
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->status = 6;
+
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
     }
 
     /**
@@ -114,6 +248,7 @@ class BugReportController extends Controller
         $model = new BugReport();
         $uploadForm = new UploadForm();
         $model->reporter_id = Yii::$app->user->id;
+        $model->status = '1';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Yeah! It is! Bug №' . $model->bug_id . ' was added successfully!');
@@ -216,6 +351,22 @@ class BugReportController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    protected function findComment($id)
+    {
+        if (($model = Comment::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findAllCommentsOfReport($id)
+    {
+        if (($model = Comment::findAll($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
     public function actionFind()
     {
         $id = Yii::$app->user->id;
@@ -281,14 +432,61 @@ class BugReportController extends Controller
     {
         ini_set('max_execution_time', 5 * 60);
         $model = File::findOne($id);
-        $filename = $model->file;
-        $path = Yii::getAlias('@web') . '/files';
-        $file = $path . '/' . $filename;
-
+        $filename = $model->filename;
+        $path = Yii::getAlias('@app') . '/web/files';
+        $file = $path . '/' . $model->filepath;
+        
         if (file_exists($file)) {
-            return Yii::$app->response->sendFile($file);
+            return Yii::$app->response->sendFile($file, $filename);
         } else {
             throw new NotFoundHttpException("Сan't find {$filename} file");
+        }
+    }
+    /*TODO: Доделать переадресацию репорта*/
+    public function actionResend($id, $sender, $recipient)
+    {
+        $model = $this->findModel($id);
+
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $model->reporter_id = $sender;
+            $model->destination_id = $recipient;
+            $model->save();
+            if ($model->save())
+            {
+                $transaction->commit();
+            } else {
+                $transaction->rollBack();
+            }
+        } catch (Exception $e) {
+            $transaction->rollBack();
+        }
+
+        return $this->redirect(['view', 'id' => $model->bug_id]);
+    }
+    /*TODO: Реализовать логику логирования*/
+    public function actionLogWork()
+    {
+        return $this->render('logWork');
+    }
+
+    public function actionComment($id)
+    {
+/*         $bug_report = $this->findModel($id);
+        $comments = $this->findAllCommentsOfReport($id);
+        $author = Yii::$app->user->identity->id;
+        var_dump($comments); die; */
+
+        $model = new CommentForm();
+            
+        if(Yii::$app->request->isPost)
+        {
+            $model->load(Yii::$app->request->post());
+            if($model->saveComment($id))
+            {
+                Yii::$app->getSession()->setFlash('comment', 'Done!');
+                return $this->redirect(['view', 'id' => $model->bug_id]);
+            }
         }
     }
 

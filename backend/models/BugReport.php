@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "{{%bug_report}}".
  *
  * @property int $bug_id
+ * @property int $project_id
  * @property string $title
  * @property string $description
  * @property string $playback_steps
@@ -19,9 +20,11 @@ use Yii;
  *
  * @property User $destination
  * @property PriorityName $priority0
+ * @property Project $project
  * @property User $reporter
  * @property SeverityName $severity0
  * @property StatusName $status0
+ * @property FileInReport[] $fileInReports
  */
 class BugReport extends \yii\db\ActiveRecord
 {
@@ -39,12 +42,13 @@ class BugReport extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['project_id', 'severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'integer'],
             [['title', 'severity', 'priority', 'status', 'destination_id'], 'required'],
             [['description', 'playback_steps'], 'string'],
-            [['severity', 'priority', 'status', 'reporter_id', 'destination_id'], 'integer'],
             [['title'], 'string', 'max' => 60],
             [['destination_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destination_id' => 'id']],
             [['priority'], 'exist', 'skipOnError' => true, 'targetClass' => PriorityName::className(), 'targetAttribute' => ['priority' => 'priority_id']],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']],
             [['reporter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reporter_id' => 'id']],
             [['severity'], 'exist', 'skipOnError' => true, 'targetClass' => SeverityName::className(), 'targetAttribute' => ['severity' => 'severity_id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => StatusName::className(), 'targetAttribute' => ['status' => 'status_id']],
@@ -58,8 +62,9 @@ class BugReport extends \yii\db\ActiveRecord
     {
         return [
             'bug_id' => 'Bug ID',
+            'project_id' => 'Project ID',
             'title' => 'Title',
-            'description' => 'description',
+            'description' => 'Description',
             'playback_steps' => 'Playback Steps',
             'severity' => 'Severity',
             'priority' => 'Priority',
@@ -88,6 +93,14 @@ class BugReport extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getProject()
+    {
+        return $this->hasOne(Project::className(), ['id' => 'project_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getReporter()
     {
         return $this->hasOne(User::className(), ['id' => 'reporter_id']);
@@ -110,11 +123,10 @@ class BugReport extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     * @return BugReportQuery the active query used by this AR class.
+     * @return \yii\db\ActiveQuery
      */
-    public static function find()
+    public function getFileInReports()
     {
-        return new BugReportQuery(get_called_class());
+        return $this->hasMany(FileInReport::className(), ['bug_id' => 'bug_id']);
     }
 }

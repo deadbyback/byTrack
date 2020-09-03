@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\BugReport;
-use common\models\BugReportSearch;
+use backend\models\BugReport;
+use backend\models\BugReportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

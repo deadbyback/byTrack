@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description') ?>
 
-    <?php// echo $form->field($model, 'playback_steps') ?>
-
     <?= $form->field($model, 'severity') ?>
 
     <?php  $form->field($model, 'priority') ?>
